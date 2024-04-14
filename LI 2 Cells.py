@@ -8,10 +8,10 @@ from scipy.integrate import odeint
 
 def model(z, t, betaD, betaR, v, n, m):
     D1, D2, R1, R2 = z
-    dD1dt = v * (betaD / (1 + R1 ** n) - D1)
-    dD2dt = v * (betaD / (1 + R2 ** n) - D2)
-    dR1dt = betaR * D2 ** m / (1 + D2 ** m) - R1
-    dR2dt = betaR * D1 ** m / (1 + D1 ** m) - R2
+    dD1dt = v * (betaD / (1 + R1**n) - D1)
+    dD2dt = v * (betaD / (1 + R2**n) - D2)
+    dR1dt = betaR * D2**m / (1 + D2**m) - R1
+    dR2dt = betaR * D1**m / (1 + D1**m) - R2
     return [dD1dt, dD2dt, dR1dt, dR2dt]
 
 
@@ -47,9 +47,9 @@ R2 = z[:, 3]
 plt.figure(1)
 plt.plot(t, D1, 'r--')
 plt.plot(t, D2, 'b-')
-plt.legend(['D1', 'D2'], loc = 'best')
+plt.legend(['D1', 'D2'], loc='best')
 plt.figure(2)
 plt.plot(t, R1, 'r--')
 plt.plot(t, R2, 'b-')
-plt.legend(['R1', 'R2'], loc = 'best')
+plt.legend(['R1', 'R2'], loc='best')
 plt.show()
