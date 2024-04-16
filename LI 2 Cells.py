@@ -22,10 +22,10 @@ t = np.linspace(0, 10, 100)
 
 # choosing parameters
 
-n = 1
-m = 1
-betaD = 1
-betaR = 1
+n = 3
+m = 3
+betaD = 10
+betaR = 10
 v = 1
 
 # initial conditions
@@ -35,7 +35,7 @@ z0 = [1e-5 * betaD, 1e-5, 0, 0]
 # solving the ODE
 
 z = odeint(model, z0, t, args=(n, m, betaD, betaR, v))
-print(z)
+# print(z)
 D1 = z[:, 0]
 D2 = z[:, 1]
 R1 = z[:, 2]
