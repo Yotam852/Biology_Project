@@ -30,7 +30,7 @@ v = 1
 
 # initial conditions
 
-z0 = [1e-5 * betaD, 1e-5, 0, 0]
+z0 = [2e-5, 1e-5, 0, 0]
 
 # solving the ODE
 
