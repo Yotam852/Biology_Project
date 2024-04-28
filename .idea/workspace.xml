@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="added new file for the stability analysis">
+    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="started coding the stability analysis">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Stability Analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Stability Analysis.py" afterDir="false" />
     </list>
@@ -48,18 +48,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Python.LI 2 Cells.executor": "Run",
-    "Python.LI Cell Grid.executor": "Run",
-    "Python.Stability Analysis.executor": "Run",
-    "Python.simple 2D ODE params.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Python.LI 2 Cells.executor&quot;: &quot;Run&quot;,
+    &quot;Python.LI Cell Grid.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Stability Analysis.executor&quot;: &quot;Run&quot;,
+    &quot;Python.simple 2D ODE params.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -172,7 +172,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713453265660</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="started coding the stability analysis">
+      <option name="closed" value="true" />
+      <created>1713455254682</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1713455254682</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -182,6 +190,7 @@
     <MESSAGE value="the code now works as planned" />
     <MESSAGE value="added new file for the cell grid model" />
     <MESSAGE value="added new file for the stability analysis" />
-    <option name="LAST_COMMIT_MESSAGE" value="added new file for the stability analysis" />
+    <MESSAGE value="started coding the stability analysis" />
+    <option name="LAST_COMMIT_MESSAGE" value="started coding the stability analysis" />
   </component>
 </project>

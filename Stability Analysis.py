@@ -3,16 +3,25 @@ import matplotlib.pyplot as plt
 import scienceplots
 import scipy as sp
 from scipy.integrate import odeint
+import sympy as smp
 
-# finding the S.S coordinates
+# Define the variables
+x, y, b, n, r = smp.symbols('x y b n r')
 
-x = np.linspace(0, 10, 100)
-y = np.linspace(0, 10, 100)
-n = 1
-beta = 10
-gamma = 1
-x_ss = beta / (gamma*(1+y**n))
-y_ss = beta / (gamma*(1+x**n))
+# Define the functions
+x_s = 1/r * b/(1 + y**n)
+y_s = 1/r * b/(1 + x**n)
 
-# calculating the jacobian matrix
+# Calculate the derivatives
+dx_s_dy = x_s.diff(y)
+dy_s_dx = y_s.diff(x)
+
+# Display the results
+print("dx_s/dy:", dx_s_dy)
+print("dy_s/dx:", dy_s_dx)
+
+# Example calculation: Let's compute the derivative values for specific values of x, y, b, n, r
+values = {x: 1, y: 1, b: 1, n: 2, r: 1}
+print("dx_s/dy at x=1, y=1, b=1, n=2, r=1:", dx_s_dy.subs(values))
+print("dy_s/dx at x=1, y=1, b=1, n=2, r=1:", dy_s_dx.subs(values))
 
