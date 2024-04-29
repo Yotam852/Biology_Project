@@ -14,8 +14,8 @@ n = 1
 
 # Define the functions
 
-x_s = 1/gamma * beta/(1 + y**n)
-y_s = 1/gamma * beta/(1 + x**n)
+x_s = 1 / gamma * beta / (1 + y ** n)
+y_s = 1 / gamma * beta / (1 + x ** n)
 
 # Calculate the derivatives
 
@@ -25,9 +25,16 @@ dx_s_dy = x_s.diff(y).subs(values)
 dy_s_dx = y_s.diff(x).subs(values)
 dy_s_dy = y_s.diff(y).subs(values)
 
-# Display the results
+# print(dx_s_dx)
+# print(dx_s_dy)
+# print(dy_s_dx)
+# print(dy_s_dy)
 
-print(dx_s_dx)
-print(dx_s_dy)
-print(dy_s_dx)
-print(dy_s_dy)
+# Creating the Jacobin Matrix
+
+J = np.array([[dx_s_dx, dx_s_dy], [dy_s_dx, dy_s_dy]])
+
+# Calculating the eigenvalues
+
+l, v = np.linalg.eig(J)
+print(l)
