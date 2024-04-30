@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="coding the Stability Analysis">
-      <change afterPath="$PROJECT_DIR$/LI Cell Grid.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Stability Analysis.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LI Cell Grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/LI Cell Grid.py" afterDir="false" />
+    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="coding the Stability Analysis and the cell grid">
+      <change beforePath="$PROJECT_DIR$/LI Cell Grid.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/LI Cell Grid.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +84,7 @@
       <updated>1713078855164</updated>
       <workItem from="1714329203387" duration="425000" />
       <workItem from="1714329657885" duration="14366000" />
-      <workItem from="1714458466708" duration="8454000" />
+      <workItem from="1714458466708" duration="8459000" />
     </task>
     <task id="LOCAL-00001" summary="note">
       <option name="closed" value="true" />
@@ -177,7 +174,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714395384707</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="coding the Stability Analysis and the cell grid">
+      <option name="closed" value="true" />
+      <created>1714474904876</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1714474904876</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -188,7 +193,8 @@
     <MESSAGE value="wrote the imports" />
     <MESSAGE value="רוב הקוד כתוב, בינתיים שני הרכיבים של R ו- D בהתאמה יוצאים זהים, צריך לבדוק מה הבעיה" />
     <MESSAGE value="coding the Stability Analysis" />
-    <option name="LAST_COMMIT_MESSAGE" value="coding the Stability Analysis" />
+    <MESSAGE value="coding the Stability Analysis and the cell grid" />
+    <option name="LAST_COMMIT_MESSAGE" value="coding the Stability Analysis and the cell grid" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Stability_Analysis.coverage" NAME="Stability Analysis Coverage Results" MODIFIED="1714395369678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
