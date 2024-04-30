@@ -1,0 +1,92 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"a93218f0-ee9f-41de-8399-0b8a62b5de3c\" name=\"Changes\" comment=\"started coding the stability analysis\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PUSH_AUTO_UPDATE\" value=\"true\" />\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;Yotam852&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/Yotam852/Biology_Project.git&quot;,\r\n    &quot;accountId&quot;: &quot;95854b31-3f5f-48df-b67e-4584bda0cfd8&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 8\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2f56zeGiVzv5Sv8dat6K1G9Pprm\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <OptionsSetting value=\"false\" id=\"Update\" />\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,\r\n    &quot;Python.LI 2 Cells.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.LI Cell Grid.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.Stability Analysis.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.simple 2D ODE params.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;\r\n  }\r\n}</component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"a93218f0-ee9f-41de-8399-0b8a62b5de3c\" name=\"Changes\" comment=\"\" />\r\n      <created>1713078855164</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1713078855164</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"note\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713079382538</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713079382538</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"wrote the imports\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713079617927</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713079617927</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"wrote the imports\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713081518599</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713081518599</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"wrote the imports\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713081637885</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713081637885</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"רוב הקוד כתוב, בינתיים שני הרכיבים של R ו- D בהתאמה יוצאים זהים, צריך לבדוק מה הבעיה\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713093933499</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713093933499</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"רוב הקוד כתוב, בינתיים שני הרכיבים של R ו- D בהתאמה יוצאים זהים, צריך לבדוק מה הבעיה\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713098269973</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713098269973</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"רוב הקוד כתוב, בינתיים שני הרכיבים של R ו- D בהתאמה יוצאים זהים, צריך לבדוק מה הבעיה\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713113650606</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713113650606</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"רוב הקוד כתוב, בינתיים שני הרכיבים של R ו- D בהתאמה יוצאים זהים, צריך לבדוק מה הבעיה\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713170816927</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713170816927</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"רוב הקוד כתוב, בינתיים שני הרכיבים של R ו- D בהתאמה יוצאים זהים, צריך לבדוק מה הבעיה\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713175498019</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713175498019</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"the code now works as planned\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713258825054</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713258825054</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"added new file for the cell grid model\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713275498382</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713275498382</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"added new file for the stability analysis\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713453265660</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713453265660</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"started coding the stability analysis\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1713455254682</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1713455254682</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"started coding the stability analysis\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1714293775350</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1714293775350</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00015\" summary=\"started coding the stability analysis\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1714294615521</created>\r\n      <option name=\"number\" value=\"00015\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00015\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1714294615521</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"16\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"note\" />\r\n    <MESSAGE value=\"wrote the imports\" />\r\n    <MESSAGE value=\"רוב הקוד כתוב, בינתיים שני הרכיבים של R ו- D בהתאמה יוצאים זהים, צריך לבדוק מה הבעיה\" />\r\n    <MESSAGE value=\"the code now works as planned\" />\r\n    <MESSAGE value=\"added new file for the cell grid model\" />\r\n    <MESSAGE value=\"added new file for the stability analysis\" />\r\n    <MESSAGE value=\"started coding the stability analysis\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"started coding the stability analysis\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 03dc8a53635bfe4d227ed5555dcb1e66df58463a)
++++ b/.idea/workspace.xml	(date 1714402101952)
+@@ -4,7 +4,9 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="started coding the stability analysis" />
++    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="started coding the stability analysis">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -45,22 +47,29 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+-    &quot;Python.LI 2 Cells.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.LI Cell Grid.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.Stability Analysis.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.simple 2D ODE params.executor&quot;: &quot;Run&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "ASKED_ADD_EXTERNAL_FILES": "true",
++    "Python.LI 2 Cells.executor": "Run",
++    "Python.LI Cell Grid.executor": "Run",
++    "Python.Stability Analysis.executor": "Run",
++    "Python.simple 2D ODE params.executor": "Run",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "git-widget-placeholder": "master",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "npm",
++    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+       <set>
+-        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
++        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-PY-241.14494.241" />
++        <option value="bundled-python-sdk-0509580d9d50-28c9f5db9ffe-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.14494.241" />
+       </set>
+     </attachedChunks>
+   </component>
+@@ -72,6 +81,7 @@
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+       <updated>1713078855164</updated>
++      <workItem from="1714401327069" duration="767000" />
+     </task>
+     <task id="LOCAL-00001" summary="note">
+       <option name="closed" value="true" />
+@@ -193,8 +203,19 @@
+       <option name="project" value="LOCAL" />
+       <updated>1714294615521</updated>
+     </task>
+-    <option name="localTasksCounter" value="16" />
++    <task id="LOCAL-00016" summary="started coding the stability analysis">
++      <option name="closed" value="true" />
++      <created>1714315286173</created>
++      <option name="number" value="00016" />
++      <option name="presentableId" value="LOCAL-00016" />
++      <option name="project" value="LOCAL" />
++      <updated>1714315286173</updated>
++    </task>
++    <option name="localTasksCounter" value="17" />
+     <servers />
++  </component>
++  <component name="TypeScriptGeneratedFilesManager">
++    <option name="version" value="3" />
+   </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="note" />
