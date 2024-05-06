@@ -1,0 +1,12 @@
+numpy
+scipy
+matplotlib
+pandas >= 0.24
+pytables
+jupyter
+notebook
+quantities
+ipywidgets
+pythreejs
+ipyvolume
+meshio

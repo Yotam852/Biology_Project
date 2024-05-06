@@ -1,0 +1,32 @@
+name: tyssue
+channels:
+- conda-forge
+
+dependencies:
+- python=3.10
+- cmake
+- pybind11
+- pip
+- boost-cpp
+- mpfr
+- gmp
+- cgal
+- numpy
+- scipy
+- matplotlib
+- pandas
+- pytables
+- jupyter
+- notebook
+- quantities
+- ipython
+- ipython_genutils
+- ipywidgets
+- pythreejs
+- ipyvolume
+- vispy
+- meshio
+- zarr
+- xarray
+- scikit-build-core
+- setuptools-scm
