@@ -6,6 +6,7 @@ import scienceplots
 import scipy as sp
 from scipy.integrate import odeint
 
+
 # Creating the function for the ODE
 
 
@@ -16,6 +17,7 @@ def model(z, t, betaD, betaR, v, n, m, k, M):
     dDdT = v * (betaD / (1 + R**n) - D)
     dRdt = betaR * D_n**m / (1 + D_n**m) - R
     return np.ravel([dDdT, dRdt])
+
 
 # Finding the Neighbours for each cell
 
@@ -56,7 +58,9 @@ def ind2pq(ind, P):
     p = ind - (q - 1) * P
     return p, q
 
+
 # Setting up the parameters
+
 
 t = np.linspace(0, 30, 300)
 n = 3
@@ -71,20 +75,26 @@ v = 1
 M = get_connectivity_matrix(P, Q, w)
 print(M)
 
+
 # Initial conditions
+
 
 D0 = 1e-5 * np.random.random((1, k))
 R0 = np.zeros((1, k))
 z0 = np.ravel([D0, R0])
 
+
 # Solving the ODE
+
 
 z = odeint(model, z0, t, args=(n, m, betaD, betaR, v, k, M))
 D = z[:, :k]
 R = z[:, k:2*k]
 print(z)
 
+
 # Plotting Concentrations
+
 
 plt.style.use(['science', 'notebook', 'grid'])
 fig, ax = plt.subplots(1, 2, sharex=True, figsize=(8, 6))
@@ -103,5 +113,7 @@ fig.text(0.04, 0.5, 'Concentration [a.u]', va='center', rotation='vertical')
 fig.suptitle('Lateral Inhibition Model for a Grid of Cells')
 plt.show()
 
+
 # Plotting Hexagons
+
 
