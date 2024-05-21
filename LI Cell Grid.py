@@ -13,7 +13,7 @@ from scipy.integrate import odeint
 def model(z, t, betaD, betaR, v, n, m, k, M):
     D = z[:k]
     R = z[k:2*k]
-    D_n = M@z[:k]
+    D_n = M @ z[:k]
     dDdT = v * (betaD / (1 + R**n) - D)
     dRdt = betaR * D_n**m / (1 + D_n**m) - R
     return np.ravel([dDdT, dRdt])
