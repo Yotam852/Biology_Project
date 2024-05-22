@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import Polygon
-from matplotlib.animation import FuncAnimation
+from matplotlib.patches import RegularPolygon
 import scienceplots
 import scipy as sp
 from scipy.integrate import odeint
@@ -20,33 +19,28 @@ def get_connectivity_matrix(P, Q, w):
     k = P * Q  # number of cells
     M = np.zeros((k, k))  # connectivity matrix
 
-    # calculating the connectivity matrix
     for s in range(k):
-        kneighbor = find_neighbor_hex(s, P, Q)
-        for r in range(6):
-            M[s-1, kneighbor[r]-1] = w
+        neighbors = find_neighbor_hex(s, P, Q)
+        for neighbor in neighbors:
+            M[s, neighbor] = w
     np.fill_diagonal(M, 0)
     return M
 
 def find_neighbor_hex(ind, P, Q):
-    # This function finds the 6 neighbors of cell ind
     p, q = ind2pq(ind, P)
-    out = [
-        pq2ind((p % P) + 1, q, P),
-        pq2ind((p - 2) % P + 1, q, P),
-        pq2ind(p if q % 2 != 0 else (p % P) + 1, (q - 2) % Q + 1, P),
-        pq2ind((p - 2) % P + 1 if q % 2 != 0 else p, (q - 2) % Q + 1, P),
-        pq2ind(p if q % 2 != 0 else (p % P) + 1, q % Q + 1, P),
-        pq2ind((p - 2) % P + 1 if q % 2 != 0 else p, q % Q + 1, P)
+    neighbors = [
+        (p, (q + 1) % Q), ((p + 1) % P, q), ((p + 1) % P, (q - 1 + Q) % Q),
+        (p, (q - 1 + Q) % Q), ((p - 1 + P) % P, q), ((p - 1 + P) % P, (q + 1) % Q)
     ]
-    return out
+    neighbors_ind = [pq2ind(np_p, np_q, P) for np_p, np_q in neighbors]
+    return neighbors_ind
 
 def pq2ind(p, q, P):
-    return p + (q - 1) * P
+    return p + q * P
 
 def ind2pq(ind, P):
-    q = 1 + ((ind - 1) // P)
-    p = ind - (q - 1) * P
+    q = ind // P
+    p = ind % P
     return p, q
 
 # Setting up the parameters
@@ -73,7 +67,6 @@ z0 = np.concatenate([D0, R0])
 z = odeint(model, z0, t, args=(betaD, betaR, v, n, m, k, M, i, j))
 D = z[:, :k]
 R = z[:, k:2*k]
-print(z)
 
 # Plotting Concentrations
 plt.figure(1)
@@ -88,15 +81,26 @@ fig.text(0.04, 0.5, 'Concentration [a.u]', va='center', rotation='vertical')
 fig.suptitle('Lateral Inhibition Model for a Grid of Cells')
 plt.show()
 
-# Plotting Hexagons
-plt.figure(2)
-fig, ax = plt.subplots(figsize=(8, 6))
-# Get the values of R at the final time point
-R_final = R[-1, :]
-# Generate hexbin plot
-hx = np.repeat(np.arange(P), Q)
-hy = np.tile(np.arange(Q), P)
-hex_colors = ax.hexbin(hx, hy, C=R_final, gridsize=(P, Q), cmap='viridis')
-plt.colorbar(hex_colors, ax=ax, label='Concentration [a.u.]')
-ax.axis('off')
+# Plotting hexagonal grids
+def plot_hex_grid(values, P, Q, ax, title):
+    hex_radius = 1.0
+    hex_height = np.sqrt(3) * hex_radius  # height of the hexagon
+    for q in range(Q):
+        for p in range(P):
+            x = p * 1.5 * hex_radius  # horizontal distance between centers
+            y = q * hex_height + (p % 2) * hex_height / 2  # staggered vertically
+            color = plt.cm.viridis(values[q * P + p])
+            hex = RegularPolygon((x, y), numVertices=6, radius=hex_radius, orientation=np.radians(30),
+                                 facecolor=color, edgecolor='k')
+            ax.add_patch(hex)
+    ax.set_xlim(-hex_radius, P * 1.5 * hex_radius)
+    ax.set_ylim(-hex_radius, Q * hex_height)
+    ax.set_aspect('equal')
+    ax.set_title(title)
+    ax.axis('off')
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 7))
+plot_hex_grid(D[-1], P, Q, ax1, 'Final D Concentrations')
+plot_hex_grid(R[-1], P, Q, ax2, 'Final R Concentrations')
+fig.suptitle('Hexagonal Grid of Cell Concentrations')
 plt.show()
