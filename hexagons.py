@@ -1,186 +1,102 @@
 import numpy as np
-from scipy.integrate import odeint
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import matplotlib.animation as animation
+from matplotlib.patches import Polygon
+from matplotlib.animation import FuncAnimation
+import scienceplots
+import scipy as sp
+from scipy.integrate import odeint
 
+# Creating the function for the ODE
+def model(z, t, betaD, betaR, v, n, m, k, M, i, j):
+    D = z[:k]
+    R = z[k:2*k]
+    D_n = M @ D
+    dDdT = v * (betaD * i**n / (i**n + R**n) - D)
+    dRdt = betaR * D_n**m / (j**m + D_n**m) - R
+    return np.concatenate([dDdT, dRdt])
 
-def multicell_LI(params=None):
-    # set time for simulation
-    Tmax = 30
-    tspan = np.linspace(0, Tmax, 300)
-
-    # get the default parameters if none provided
-    if params is None:
-        params = defaultparams()
-
-    P = params['P']  # number of cells per column
-    Q = params['Q']  # number of columns - MUST BE EVEN
-    k = P * Q  # number of cells
-
-    # get the connectivity matrix
-    params['connectivity'] = getconnectivityM(P, Q)
-
-    # setting the initial conditions + noise
-    y0 = getIC(params, k)
-
-    # run simulation with lateral inhibition
-    yout = odeint(li, y0, tspan, args=(params,))
-
-    # show time traces of two cells with lateral inhibition
-    plot2cells(tspan, yout, k)
-
-    # show lattice simulation
-    F = movielattice(tspan, yout, P, Q, k)
-
-    return yout, tspan, params, F
-
-
-def li(y, t, params):
-    nu = params['nu']
-    betaD = params['betaD']
-    betaR = params['betaR']
-    h = params['h']
-    m = params['m']
-    M = params['connectivity']
-    k = len(M)
-
-    D = y[:k]  # levels of Delta in cells 1 to k
-    R = y[k:]  # levels of Repressor in cells 1 to k
-    Dneighbor = M @ D  # average Delta level in the neighboring cells
-
-    # differential equations for Delta and repressor levels
-    dD = nu * (betaD / (1 + R ** h) - D)
-    dR = betaR * Dneighbor ** m / (1 + Dneighbor ** m) - R
-    dy = np.concatenate([dD, dR])
-
-    return dy
-
-
-def defaultparams():
-    return {
-        'nu': 1,  # ratio of degradation rates
-        'betaD': 50,  # normalized Delta production
-        'betaR': 50,  # normalized repressor production
-        'h': 3,  # Hill coefficient repression function
-        'm': 3,  # Hill coefficient activating function
-        'sigma': 0.2,  # noise amplitude in initial conditions
-        'P': 18,  # number of cells per column
-        'Q': 18,  # number of columns - MUST BE EVEN
-    }
-
-
-def getconnectivityM(P, Q):
+# Finding the Neighbours for each cell
+def get_connectivity_matrix(P, Q, w):
     k = P * Q  # number of cells
     M = np.zeros((k, k))  # connectivity matrix
-    w = 1 / 6  # weight for interactions
 
     # calculating the connectivity matrix
     for s in range(k):
-        kneighbor = findneighborhex(s, P, Q)
+        kneighbor = find_neighbor_hex(s, P, Q)
         for r in range(6):
-            if kneighbor[r] is not None:  # Ensure neighbor is within bounds
-                M[s, kneighbor[r]] = w
+            M[s-1, kneighbor[r]-1] = w
+    np.fill_diagonal(M, 0)
     return M
 
-
-def getIC(params, k):
-    U = np.random.rand(k) - 0.5  # a uniform random distribution
-    epsilon = 1e-5  # multiplicative factor of Delta initial condition
-    D0 = epsilon * params['betaD'] * (1 + params['sigma'] * U)  # initial Delta levels
-    R0 = np.zeros(k)  # initial repressor levels
-    y0 = np.concatenate([D0, R0])  # vector of initial conditions
-    return y0
-
-
-def plot2cells(tout, yout, k):
-    plt.figure(figsize=(12, 5))
-    for i in range(2):
-        plt.subplot(1, 2, i + 1)
-        plt.plot(tout, yout[:, i], '-r', linewidth=2)  # plot Delta levels
-        plt.plot(tout, yout[:, k + i], '-b', linewidth=2)  # plot repressor levels
-        plt.title(f'cell #{i + 1}')
-        plt.xlabel('t [a.u]')
-        plt.ylabel('concentration [a.u]')
-        plt.legend(['d', 'r'])
-    plt.show()
-
-
-def findneighborhex(ind, P, Q):
+def find_neighbor_hex(ind, P, Q):
+    # This function finds the 6 neighbors of cell ind
     p, q = ind2pq(ind, P)
-
-    # above and below:
-    out = []
-    out.append(pq2ind((p % P) + 1, q, P, Q))
-    out.append(pq2ind((p - 2) % P + 1, q, P, Q))
-
-    # left and right sides:
-    qleft = (q - 2) % Q + 1
-    qright = q % Q + 1
-
-    if q % 2 != 0:
-        pup = p
-        pdown = (p - 2) % P + 1
-    else:
-        pup = (p % P) + 1
-        pdown = p
-    out.append(pq2ind(pup, qleft, P, Q))
-    out.append(pq2ind(pdown, qleft, P, Q))
-    out.append(pq2ind(pup, qright, P, Q))
-    out.append(pq2ind(pdown, qright, P, Q))
-
-    # Ensure neighbors are within bounds
-    out = [neighbor if neighbor < P * Q and neighbor >= 0 else None for neighbor in out]
+    out = [
+        pq2ind((p % P) + 1, q, P),
+        pq2ind((p - 2) % P + 1, q, P),
+        pq2ind(p if q % 2 != 0 else (p % P) + 1, (q - 2) % Q + 1, P),
+        pq2ind((p - 2) % P + 1 if q % 2 != 0 else p, (q - 2) % Q + 1, P),
+        pq2ind(p if q % 2 != 0 else (p % P) + 1, q % Q + 1, P),
+        pq2ind((p - 2) % P + 1 if q % 2 != 0 else p, q % Q + 1, P)
+    ]
     return out
 
-
-def pq2ind(p, q, P, Q):
-    return (p - 1) + (q - 1) * P
-
+def pq2ind(p, q, P):
+    return p + (q - 1) * P
 
 def ind2pq(ind, P):
-    q = 1 + ind // P
-    p = ind % P + 1
+    q = 1 + ((ind - 1) // P)
+    p = ind - (q - 1) * P
     return p, q
 
+# Setting up the parameters
+t = np.linspace(0, 30, 300)
+n = 3
+m = 3
+P = 10
+Q = 10
+k = P * Q
+w = 1/6
+betaD = 10
+betaR = 10
+v = 1
+M = get_connectivity_matrix(P, Q, w)
+i = 1
+j = 1
 
-def plotHexagon(ax, p0, q0, c):
-    s32 = np.sqrt(3) / 4
-    q = q0 * 3 / 4
-    p = p0 * 2 * s32
-    if q0 % 2 == 0:
-        p = p + s32
+# Initial conditions
+D0 = 1e-5 * np.random.random(k)
+R0 = np.zeros(k)
+z0 = np.concatenate([D0, R0])
 
-    x = [q - .5, q - .25, q + .25, q + .5, q + .25, q - .25]
-    y = [p, p + s32, p + s32, p, p - s32, p - s32]
+# Solving the ODE
+z = odeint(model, z0, t, args=(betaD, betaR, v, n, m, k, M, i, j))
+D = z[:, :k]
+R = z[:, k:2*k]
+print(z)
 
-    polygon = patches.Polygon(list(zip(x, y)), closed=True, color=c, linewidth=2)
-    ax.add_patch(polygon)
+# Plotting Concentrations
+plt.figure(1)
+plt.style.use(['science', 'notebook', 'grid'])
+fig, ax = plt.subplots(1, 2, sharex=True, figsize=(8, 6))
+ax[0].plot(t, D[:, :2])
+ax[0].legend(['D1', 'D2'])
+ax[1].plot(t, R[:, :2])
+ax[1].legend(['R1', 'R2'])
+fig.text(0.5, 0.04, 'Time [a.u]', ha='center')
+fig.text(0.04, 0.5, 'Concentration [a.u]', va='center', rotation='vertical')
+fig.suptitle('Lateral Inhibition Model for a Grid of Cells')
+plt.show()
 
-
-def movielattice(tout, yout, P, Q, k):
-    fig, ax = plt.subplots()
-    ax.set_aspect('equal')
-    Cmax = np.max(yout[-1, :k])  # finds max(Delta) at the end point
-
-    def update(tind):
-        ax.clear()
-        for i in range(P):
-            for j in range(Q):
-                ind = pq2ind(i + 1, j + 1, P, Q)
-                if ind < k:
-                    mycolor = min(yout[tind, ind] / Cmax, 1)
-                    plotHexagon(ax, i + 1, j + 1, [1 - mycolor, 1 - mycolor, 1])
-        ax.axis('off')
-        ax.set_xlim(-1, Q * 0.75)
-        ax.set_ylim(-1, P * np.sqrt(3) / 2)
-        return ax,
-
-    ani = animation.FuncAnimation(fig, update, frames=range(0, len(tout), 5), blit=False)
-    plt.show()
-    return ani
-
-
-# Run the simulation with default parameters
-if __name__ == '__main__':
-    yout, tout, params, F = multicell_LI()
+# Plotting Hexagons
+plt.figure(2)
+fig, ax = plt.subplots(figsize=(8, 6))
+# Get the values of R at the final time point
+R_final = R[-1, :]
+# Generate hexbin plot
+hx = np.repeat(np.arange(P), Q)
+hy = np.tile(np.arange(Q), P)
+hex_colors = ax.hexbin(hx, hy, C=R_final, gridsize=(P, Q), cmap='viridis')
+plt.colorbar(hex_colors, ax=ax, label='Concentration [a.u.]')
+ax.axis('off')
+plt.show()

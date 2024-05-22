@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import Polygon
+from matplotlib.patches import RegularPolygon
 from matplotlib.animation import FuncAnimation
 import scienceplots
 import scipy as sp
@@ -10,12 +10,12 @@ from scipy.integrate import odeint
 # Creating the function for the ODE
 
 
-def model(z, t, betaD, betaR, v, n, m, k, M):
+def model(z, t, betaD, betaR, v, n, m, k, M, i, j):
     D = z[:k]
     R = z[k:2*k]
     D_n = M @ z[:k]
-    dDdT = v * (betaD / (1 + R**n) - D)
-    dRdt = betaR * D_n**m / (1 + D_n**m) - R
+    dDdT = v * (betaD * i**n / (i**n + R**n) - D)
+    dRdt = betaR * D_n**m / (j**m + D_n**m) - R
     return np.ravel([dDdT, dRdt])
 
 
@@ -73,8 +73,8 @@ betaD = 10
 betaR = 10
 v = 1
 M = get_connectivity_matrix(P, Q, w)
-print(M)
-
+i = 1
+j = 1
 
 # Initial conditions
 
@@ -87,7 +87,7 @@ z0 = np.ravel([D0, R0])
 # Solving the ODE
 
 
-z = odeint(model, z0, t, args=(n, m, betaD, betaR, v, k, M))
+z = odeint(model, z0, t, args=(n, m, betaD, betaR, v, k, M, i, j))
 D = z[:, :k]
 R = z[:, k:2*k]
 print(z)
@@ -96,6 +96,7 @@ print(z)
 # Plotting Concentrations
 
 
+plt.figure(1)
 plt.style.use(['science', 'notebook', 'grid'])
 fig, ax = plt.subplots(1, 2, sharex=True, figsize=(8, 6))
 ax[0].plot(t, D[:, :2])
@@ -117,3 +118,28 @@ plt.show()
 # Plotting Hexagons
 
 
+plt.figure(2)
+fig, ax = plt.subplots(figsize=(8, 6))
+# Get the values of R at the final time point
+R_final = R[-1, :]
+
+# Create the hexagonal grid
+hex_radius = 1 / np.sqrt(3)
+for q in range(Q):
+    for p in range(P):
+        x = p + (q % 2) * 0.5
+        y = q * (3/2 * hex_radius)
+        index = pq2ind(p + 1, q + 1, P) - 1
+        color = R_final[index]
+        hexagon = RegularPolygon((x, y), numVertices=6, radius=hex_radius,
+                                 orientation=np.radians(30),
+                                 facecolor=plt.cm.viridis(color), edgecolor='k')
+        ax.add_patch(hexagon)
+
+# Adjust plot limits
+ax.set_xlim(-1, P + 1)
+ax.set_ylim(-1, Q * (3/2 * hex_radius) + 1)
+ax.set_aspect('equal')
+plt.colorbar(plt.cm.ScalarMappable(cmap='viridis'), ax=ax, label='Concentration [a.u.]')
+ax.axis('off')
+plt.show()
