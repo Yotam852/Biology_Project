@@ -117,25 +117,6 @@ plt.show()
 # Plotting Hexagons
 
 
-def plot_hex_grid(values, P, Q, ax, title):
-    hex_radius = 1.0
-    hex_height = np.sqrt(3) * hex_radius  # height of the hexagon
-    for q in range(Q):
-        for p in range(P):
-            x = p * 1.5 * hex_radius  # horizontal distance between centers
-            y = q * hex_height + (p % 2) * hex_height / 2  # staggered vertically
-            color = plt.cm.viridis(values[q * P + p])
-            hex = RegularPolygon((x, y), numVertices=6, radius=hex_radius, orientation=np.radians(30),
-                                 facecolor=color, edgecolor='k')
-            ax.add_patch(hex)
-    ax.set_xlim(-hex_radius, P * 1.5 * hex_radius)
-    ax.set_ylim(-hex_radius, Q * hex_height)
-    ax.set_aspect('equal')
-    ax.set_title(title)
-    ax.axis('off')
-
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 7))
-plot_hex_grid(D[-1], P, Q, ax1, 'Final D Concentrations')
-plot_hex_grid(R[-1], P, Q, ax2, 'Final R Concentrations')
-fig.suptitle('Hexagonal Grid of Cell Concentrations')
+plt.hexbin(t, R[:, 0], gridsize=(P, Q), cmap='viridis')
+plt.axis('off')
 plt.show()
