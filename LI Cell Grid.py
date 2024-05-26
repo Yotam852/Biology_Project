@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import RegularPolygon
-from matplotlib.animation import FuncAnimation
+import matplotlib.patches as patches
 import scienceplots
 import scipy as sp
 from scipy.integrate import odeint
@@ -117,6 +116,44 @@ plt.show()
 # Plotting Hexagons
 
 
-plt.hexbin(t, R[:, 0], gridsize=(P, Q), cmap='viridis')
-plt.axis('off')
-plt.show()
+def draw_hexagonal_lattice(values, P, Q):
+    """
+    Draws a hexagonal lattice where each hexagon's color corresponds to a value in a list.
+
+    :param values: List of values to determine the color of each hexagon.
+    :param P: Number of rows in the hexagonal lattice.
+    :param Q: Number of columns in the hexagonal lattice.
+    """
+    fig, ax = plt.subplots()
+    ax.set_aspect('equal')
+    hex_radius = 1
+    hex_height = np.sqrt(3) * hex_radius
+    hex_width = 2 * hex_radius
+
+    def hexagon(x_center, y_center, color):
+        hexagon = patches.RegularPolygon((x_center, y_center), numVertices=6, radius=hex_radius,
+                                         orientation=np.radians(30), edgecolor='k')
+        hexagon.set_facecolor(color)
+        ax.add_patch(hexagon)
+
+    # Normalize values to range [0, 1] for color mapping
+    norm = plt.Normalize(min(values), max(values))
+    cmap = plt.get_cmap('viridis')
+
+    index = 0
+    for q in range(Q):
+        for p in range(P):
+            if index < len(values):
+                x = q * hex_width * 0.75
+                y = p * hex_height + (q % 2) * (hex_height / 2)
+                color = cmap(norm(values[index]))
+                hexagon(x, y, color)
+                index += 1
+
+    ax.autoscale()
+    ax.axis('off')
+    plt.show()
+
+
+draw_hexagonal_lattice(D[-1, :], P, Q)
+
