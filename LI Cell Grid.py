@@ -157,3 +157,4 @@ def draw_hexagonal_lattice(values, P, Q):
 
 draw_hexagonal_lattice(D[-1, :], P, Q)
 
+#
