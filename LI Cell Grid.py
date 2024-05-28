@@ -29,7 +29,7 @@ def get_connectivity_matrix(P, Q, w):
     for s in range(k):
         kneighbor = find_neighbor_hex(s, P, Q)
         for r in range(6):
-            M[s-1, kneighbor[r]-1] = w
+            M[s-1, kneighbor[r]-1] = w  # Fix this line
     np.fill_diagonal(M, 0)
     return M
 
