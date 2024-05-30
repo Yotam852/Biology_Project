@@ -70,6 +70,8 @@ M = get_connectivity_matrix(P, Q, w)
 # print(M)
 i = 1
 j = 1
+# i = np.random.normal(2.596e-10)
+# j = np.random.normal(9.25e-4)
 
 # Initial conditions
 D0 = 1e-5 * np.random.random(k)
