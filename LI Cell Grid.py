@@ -72,8 +72,10 @@ betaD = 10
 betaR = 10
 v = 1
 M = get_connectivity_matrix(P, Q, w)
-i = np.random.normal(2.596e-10)
-j = np.random.normal(9.25e-4)
+i = 1
+j = 1
+# i = np.random.normal(2.596e-10)
+# j = np.random.normal(9.25e-4)
 
 # Initial conditions
 
