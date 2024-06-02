@@ -64,8 +64,10 @@ betaD = 10
 betaR = 10
 v = 1
 M = get_connectivity_matrix(P, Q, w)
-i = 9e-24
+i = 1
+# i = 9e-24
 j = 1
+# j = insert here lower border
 
 # Initial conditions
 D0 = 1e-5 * np.random.random(k)
