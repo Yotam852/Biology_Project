@@ -1,90 +1,152 @@
 import numpy as np
+from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import scienceplots
-from scipy.integrate import odeint
+from matplotlib.animation import FuncAnimation
 
-# Define the model and helper functions
-def model(z, t, betaD, betaR, v, n, m, k, M, i, j):
-    D = z[:k]
-    R = z[k:2 * k]
-    D_n = M @ D
-    dDdT = v * (betaD * i ** n / (i ** n + R ** n) - D)
-    dRdt = betaR * D_n ** m / (j ** m + D_n ** m) - R
-    return np.ravel([dDdT, dRdt])
 
-def get_connectivity_matrix(P, Q, w):
+def default_params():
+    return {
+        'nu': 1,
+        'betaD': 50,
+        'betaR': 50,
+        'h': 3,
+        'm': 3,
+        'sigma': 0.2,
+        'P': 18,
+        'Q': 18
+    }
+
+
+def get_connectivity_matrix(P, Q):
     k = P * Q
     M = np.zeros((k, k))
+    w = 1 / 6
+
     for s in range(k):
         neighbors = find_neighbor_hex(s, P, Q)
-        for neighbor in neighbors:
-            M[s, neighbor] = w
-    np.fill_diagonal(M, 0)
+        for r in range(6):
+            M[s, neighbors[r]] = w
     return M
+
 
 def find_neighbor_hex(ind, P, Q):
     p, q = ind2pq(ind, P)
     neighbors = [
-        (p, (q - 1) % Q),  # top
-        (p, (q + 1) % Q),  # bottom
-        ((p + 1) % P, q if q % 2 == 0 else (q - 1) % Q),  # top-right / bottom-right
-        ((p - 1) % P, q if q % 2 == 0 else (q - 1) % Q),  # top-left / bottom-left
-        ((p + 1) % P, (q + 1) % Q if q % 2 != 0 else q),  # bottom-right / top-right
-        ((p - 1) % P, (q + 1) % Q if q % 2 != 0 else q)  # bottom-left / top-left
+        pq2ind((p % P) + 1, q, P),
+        pq2ind((p - 2) % P + 1, q, P),
+        pq2ind(p % P + 1, (q - 2) % Q + 1, P),
+        pq2ind((p - 2) % P + 1, (q - 2) % Q + 1, P),
+        pq2ind(p % P + 1, (q % Q) + 1, P),
+        pq2ind((p - 2) % P + 1, (q % Q) + 1, P)
     ]
-    return [pq2ind(x, y, P) for x, y in neighbors]
+    return [n for n in neighbors if 0 <= n < P * Q]  # Ensure indices are within bounds
+
 
 def pq2ind(p, q, P):
-    return p + q * P
+    return (p - 1) + (q - 1) * P
+
 
 def ind2pq(ind, P):
-    q = ind // P
-    p = ind % P
+    q = 1 + (ind // P)
+    p = 1 + (ind % P)
     return p, q
 
-# Setting up the parameters
-t = np.linspace(0, 30, 300)
-n = 3
-m = 3
-P = 10
-Q = 10
-k = P * Q
-w = 1 / 6
-betaD = 10
-betaR = 10
-v = 1
-M = get_connectivity_matrix(P, Q, w)
-j = 1
 
-# Initial conditions
-D0 = 1e-5 * np.random.random(k)
-R0 = np.zeros(k)
-z0 = np.ravel([D0, R0])
+def get_initial_conditions(params, k):
+    U = np.random.rand(k) - 0.5
+    epsilon = 1e-5
+    D0 = epsilon * params['betaD'] * (1 + params['sigma'] * U)
+    R0 = np.zeros(k)
+    y0 = np.concatenate([D0, R0])
+    return y0
 
-# Varying i and plotting results
-i_values = np.linspace(1e-30, 1e-20, 100)
-inhibition_threshold = 0.01
 
-R_final = []
-for i in i_values:
-    z = odeint(model, z0, t, args=(betaD, betaR, v, n, m, k, M, i, j))
-    R = z[:, k:2 * k]
-    R_final.append(np.mean(R[-1, :]))
+def li(y, t, params):
+    nu = params['nu']
+    betaD = params['betaD']
+    betaR = params['betaR']
+    h = params['h']
+    m = params['m']
+    M = params['connectivity']
+    k = len(M)
 
-plt.plot(i_values, R_final)
-plt.axhline(y=inhibition_threshold, color='r', linestyle='--', label='Inhibition Threshold')
-plt.xlabel('i')
-plt.ylabel('Final mean R')
-plt.title('Final mean R vs i')
-plt.legend()
-plt.show()
+    D = y[:k]
+    R = y[k:2 * k]
+    Dneighbor = M.dot(D)
 
-# Finding the lower limit of i where inhibition no longer occurs
-lower_limit_i = None
-for i, R_mean in zip(i_values, R_final):
-    if R_mean < inhibition_threshold:
-        lower_limit_i = i
-        break
+    dD = nu * (betaD / (1 + R ** h) - D)
+    dR = betaR * Dneighbor ** m / (1 + Dneighbor ** m) - R
 
-print(f"The lower limit of i where inhibition no longer occurs is approximately: {lower_limit_i}")
+    return np.concatenate([dD, dR])
+
+
+def plot_two_cells(t, y, k):
+    plt.ioff()  # Ensure interactive mode is off
+    fig, axes = plt.subplots(1, 2)
+    for i in range(2):
+        axes[i].plot(t, y[:, i], '-r', linewidth=2)
+        axes[i].plot(t, y[:, k + i], '-b', linewidth=2)
+        axes[i].set_title(f'cell #{i + 1}')
+        axes[i].set_xlabel('t [a.u]')
+        axes[i].set_ylabel('concentration [a.u]')
+        axes[i].legend(['D', 'R'])
+    plt.show()
+
+
+def plot_hexagon(p0, q0, c, ax):
+    s32 = np.sqrt(3) / 2
+    q = q0 * 3 / 4
+    p = p0 * s32
+    if q0 % 2 == 0:
+        p += s32 / 2
+
+    x = [q - 0.5, q - 0.25, q + 0.25, q + 0.5, q + 0.25, q - 0.25]
+    y = [p, p + s32, p + s32, p, p - s32, p - s32]
+
+    polygon = patches.Polygon(list(zip(x, y)), closed=True, color=c, linewidth=2)
+    ax.add_patch(polygon)
+
+
+def movie_lattice(t, y, P, Q, k):
+    fig, ax = plt.subplots()
+    Cmax = np.max(y[-1, :k])
+
+    def update(frame):
+        ax.clear()
+        for i in range(1, P + 1):
+            for j in range(1, Q + 1):
+                ind = pq2ind(i, j, P)
+                if ind < k:  # Ensure the index is within bounds
+                    mycolor = min(y[frame, ind] / Cmax, 1)
+                    plot_hexagon(i, j, [1 - mycolor, 1 - mycolor, 1], ax)
+        ax.set_aspect('equal')
+        ax.axis('off')
+
+    ani = FuncAnimation(fig, update, frames=range(0, len(t), 5), repeat=False)
+    plt.show()
+    return ani
+
+
+def multicell_LI(params=None):
+    if params is None:
+        params = default_params()
+
+    P = params['P']
+    Q = params['Q']
+    k = P * Q
+
+    params['connectivity'] = get_connectivity_matrix(P, Q)
+    y0 = get_initial_conditions(params, k)
+
+    t = np.linspace(0, 30, 300)
+    y = odeint(li, y0, t, args=(params,))
+
+    plot_two_cells(t, y, k)
+    ani = movie_lattice(t, y, P, Q, k)
+
+    return y, t, params, ani
+
+
+# Run the simulation
+y, t, params, ani = multicell_LI()
