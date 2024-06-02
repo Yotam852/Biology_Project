@@ -66,7 +66,7 @@ betaD = 10
 betaR = 10
 v = 1
 M = get_connectivity_matrix(P, Q, w)
-i = 4.25
+i = 1
 j = 1
 
 # Initial conditions
