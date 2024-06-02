@@ -9,8 +9,10 @@ def model(z, t, betaD, betaR, v, n, m, k, M, i, j):
     D = z[:k]
     R = z[k:2 * k]
     D_n = M @ D
-    dDdT = v * (betaD * i ** n / (i ** n + R ** n) - D)
-    dRdt = betaR * D_n ** m / (j ** m + D_n ** m) - R
+    f_R = betaD * i ** n / (i ** n + R ** n)
+    g_D = betaR * D_n ** m / (j ** m + D_n ** m)
+    dDdT = v * f_R - D
+    dRdt = g_D - R
     return np.ravel([dDdT, dRdt])
 
 
