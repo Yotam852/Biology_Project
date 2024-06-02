@@ -7,7 +7,7 @@ from scipy.integrate import odeint
 
 def model(z, t, betaD, betaR, v, n, m, k, M, i, j):
     D = z[:k]
-    R = z[k:2 * k]
+    R = z[k:2*k]
     D_n = M @ D
     f_R = betaD * i ** n / (i ** n + R ** n)
     g_D = betaR * D_n ** m / (j ** m + D_n ** m)
@@ -66,10 +66,8 @@ betaD = 10
 betaR = 10
 v = 1
 M = get_connectivity_matrix(P, Q, w)
-i = 1
-# i = 9e-24
+i = 4.25
 j = 1
-# j = insert here lower border
 
 # Initial conditions
 D0 = 1e-5 * np.random.random(k)

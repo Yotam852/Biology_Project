@@ -1,152 +1,122 @@
 import numpy as np
-from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from matplotlib.animation import FuncAnimation
+import scienceplots
+from scipy.integrate import odeint
 
+def model(z, t, betaD, betaR, v, n, m, k, M, i_vec, j):
+    D = z[:k]
+    R = z[k:2*k]
+    D_n = M @ D
+    f_R = betaD * i_vec ** n / (i_vec ** n + R ** n)
+    g_D = betaR * D_n ** m / (j ** m + D_n ** m)
+    dDdT = v * f_R - D
+    dRdt = g_D - R
+    return np.ravel([dDdT, dRdt])
 
-def default_params():
-    return {
-        'nu': 1,
-        'betaD': 50,
-        'betaR': 50,
-        'h': 3,
-        'm': 3,
-        'sigma': 0.2,
-        'P': 18,
-        'Q': 18
-    }
-
-
-def get_connectivity_matrix(P, Q):
+def get_connectivity_matrix(P, Q, w):
     k = P * Q
     M = np.zeros((k, k))
-    w = 1 / 6
 
     for s in range(k):
         neighbors = find_neighbor_hex(s, P, Q)
-        for r in range(6):
-            M[s, neighbors[r]] = w
-    return M
+        for neighbor in neighbors:
+            M[s, neighbor] = w
 
+    np.fill_diagonal(M, 0)
+    return M
 
 def find_neighbor_hex(ind, P, Q):
     p, q = ind2pq(ind, P)
-    neighbors = [
-        pq2ind((p % P) + 1, q, P),
-        pq2ind((p - 2) % P + 1, q, P),
-        pq2ind(p % P + 1, (q - 2) % Q + 1, P),
-        pq2ind((p - 2) % P + 1, (q - 2) % Q + 1, P),
-        pq2ind(p % P + 1, (q % Q) + 1, P),
-        pq2ind((p - 2) % P + 1, (q % Q) + 1, P)
-    ]
-    return [n for n in neighbors if 0 <= n < P * Q]  # Ensure indices are within bounds
 
+    neighbors = [
+        (p, (q - 1) % Q),  # top
+        (p, (q + 1) % Q),  # bottom
+        ((p + 1) % P, q if q % 2 == 0 else (q - 1) % Q),  # top-right / bottom-right
+        ((p - 1) % P, q if q % 2 == 0 else (q - 1) % Q),  # top-left / bottom-left
+        ((p + 1) % P, (q + 1) % Q if q % 2 != 0 else q),  # bottom-right / top-right
+        ((p - 1) % P, (q + 1) % Q if q % 2 != 0 else q)  # bottom-left / top-left
+    ]
+
+    return [pq2ind(x, y, P) for x, y in neighbors]
 
 def pq2ind(p, q, P):
-    return (p - 1) + (q - 1) * P
-
+    return p + q * P
 
 def ind2pq(ind, P):
-    q = 1 + (ind // P)
-    p = 1 + (ind % P)
+    q = ind // P
+    p = ind % P
     return p, q
 
+# Setting up the parameters
+t = np.linspace(0, 30, 300)
+n = 3
+m = 3
+P = 10
+Q = 10
+k = P * Q
+w = 1 / 6
+betaD = 10
+betaR = 10
+v = 1
+M = get_connectivity_matrix(P, Q, w)
+mean_i = 4.25
+std_i = 0.5  # Standard deviation for the normal distribution
+i_vec = np.random.normal(mean_i, std_i, k)
+j = 1
 
-def get_initial_conditions(params, k):
-    U = np.random.rand(k) - 0.5
-    epsilon = 1e-5
-    D0 = epsilon * params['betaD'] * (1 + params['sigma'] * U)
-    R0 = np.zeros(k)
-    y0 = np.concatenate([D0, R0])
-    return y0
+# Initial conditions
+D0 = 1e-5 * np.random.random(k)
+R0 = np.zeros(k)
+z0 = np.ravel([D0, R0])
 
+# Solving the ODE
+z = odeint(model, z0, t, args=(betaD, betaR, v, n, m, k, M, i_vec, j))
+D = z[:, :k]
+R = z[:, k:2 * k]
 
-def li(y, t, params):
-    nu = params['nu']
-    betaD = params['betaD']
-    betaR = params['betaR']
-    h = params['h']
-    m = params['m']
-    M = params['connectivity']
-    k = len(M)
+# Plotting Concentrations
+plt.style.use(['science', 'notebook', 'grid'])
+fig, ax = plt.subplots(1, 2, sharex=True, figsize=(8, 6))
+ax[0].plot(t, D[:, :2])
+ax[0].legend(['D1', 'D2'])
+ax[1].plot(t, R[:, :2])
+ax[1].legend(['R1', 'R2'])
+fig.text(0.5, 0.04, 'Time [a.u]', ha='center')
+fig.text(0.04, 0.5, 'Concentration [a.u]', va='center', rotation='vertical')
+fig.suptitle('Lateral Inhibition Model for a Grid of Cells')
+plt.show()
 
-    D = y[:k]
-    R = y[k:2 * k]
-    Dneighbor = M.dot(D)
-
-    dD = nu * (betaD / (1 + R ** h) - D)
-    dR = betaR * Dneighbor ** m / (1 + Dneighbor ** m) - R
-
-    return np.concatenate([dD, dR])
-
-
-def plot_two_cells(t, y, k):
-    plt.ioff()  # Ensure interactive mode is off
-    fig, axes = plt.subplots(1, 2)
-    for i in range(2):
-        axes[i].plot(t, y[:, i], '-r', linewidth=2)
-        axes[i].plot(t, y[:, k + i], '-b', linewidth=2)
-        axes[i].set_title(f'cell #{i + 1}')
-        axes[i].set_xlabel('t [a.u]')
-        axes[i].set_ylabel('concentration [a.u]')
-        axes[i].legend(['D', 'R'])
-    plt.show()
-
-
-def plot_hexagon(p0, q0, c, ax):
-    s32 = np.sqrt(3) / 2
-    q = q0 * 3 / 4
-    p = p0 * s32
-    if q0 % 2 == 0:
-        p += s32 / 2
-
-    x = [q - 0.5, q - 0.25, q + 0.25, q + 0.5, q + 0.25, q - 0.25]
-    y = [p, p + s32, p + s32, p, p - s32, p - s32]
-
-    polygon = patches.Polygon(list(zip(x, y)), closed=True, color=c, linewidth=2)
-    ax.add_patch(polygon)
-
-
-def movie_lattice(t, y, P, Q, k):
+# Plotting Hexagons
+def draw_hexagonal_lattice(values, P, Q):
     fig, ax = plt.subplots()
-    Cmax = np.max(y[-1, :k])
+    ax.set_aspect('equal')
+    hex_radius = 1
+    hex_height = np.sqrt(3) * hex_radius
+    hex_width = 2 * hex_radius
 
-    def update(frame):
-        ax.clear()
-        for i in range(1, P + 1):
-            for j in range(1, Q + 1):
-                ind = pq2ind(i, j, P)
-                if ind < k:  # Ensure the index is within bounds
-                    mycolor = min(y[frame, ind] / Cmax, 1)
-                    plot_hexagon(i, j, [1 - mycolor, 1 - mycolor, 1], ax)
-        ax.set_aspect('equal')
-        ax.axis('off')
+    def hexagon(x_center, y_center, color):
+        hexagon = patches.RegularPolygon((x_center, y_center), numVertices=6, radius=hex_radius,
+                                         orientation=np.radians(30), edgecolor='k')
+        hexagon.set_facecolor(color)
+        ax.add_patch(hexagon)
 
-    ani = FuncAnimation(fig, update, frames=range(0, len(t), 5), repeat=False)
+    norm = plt.Normalize(min(values), max(values))
+    cmap = plt.get_cmap('viridis')
+
+    index = 0
+    for q in range(Q):
+        for p in range(P):
+            if index < len(values):
+                x = q * hex_width * 0.75
+                y = p * hex_height + (q % 2) * (hex_height / 2)
+                color = cmap(norm(values[index]))
+                hexagon(x, y, color)
+                index += 1
+
+    ax.autoscale()
+    ax.axis('off')
     plt.show()
-    return ani
 
-
-def multicell_LI(params=None):
-    if params is None:
-        params = default_params()
-
-    P = params['P']
-    Q = params['Q']
-    k = P * Q
-
-    params['connectivity'] = get_connectivity_matrix(P, Q)
-    y0 = get_initial_conditions(params, k)
-
-    t = np.linspace(0, 30, 300)
-    y = odeint(li, y0, t, args=(params,))
-
-    plot_two_cells(t, y, k)
-    ani = movie_lattice(t, y, P, Q, k)
-
-    return y, t, params, ani
-
-
-# Run the simulation
-y, t, params, ani = multicell_LI()
+draw_hexagonal_lattice(D[-1, :], P, Q)
+draw_hexagonal_lattice(R[-1, :], P, Q)
