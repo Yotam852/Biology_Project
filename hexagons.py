@@ -4,12 +4,12 @@ import matplotlib.patches as patches
 import scienceplots
 from scipy.integrate import odeint
 
-def model(z, t, betaD, betaR, v, n, m, k, M, i_vec, j):
+def model(z, t, betaD, betaR, v, n, m, k, M, i_vec, j_vec):
     D = z[:k]
     R = z[k:2*k]
     D_n = M @ D
     f_R = betaD * i_vec ** n / (i_vec ** n + R ** n)
-    g_D = betaR * D_n ** m / (j ** m + D_n ** m)
+    g_D = betaR * D_n ** m / (j_vec ** m + D_n ** m)
     dDdT = v * f_R - D
     dRdt = g_D - R
     return np.ravel([dDdT, dRdt])
@@ -61,9 +61,12 @@ betaR = 10
 v = 1
 M = get_connectivity_matrix(P, Q, w)
 mean_i = 4.25
-std_i = 0.5  # Standard deviation for the normal distribution
+std_i = 0.5  # Standard deviation for the normal distribution for i
 i_vec = np.random.normal(mean_i, std_i, k)
-j = 1
+mean_j = 6.25
+std_j = 0.5  # Standard deviation for the normal distribution for j
+# j_vec = np.random.normal(mean_j, std_j, k)
+j_vec = 1
 
 # Initial conditions
 D0 = 1e-5 * np.random.random(k)
@@ -71,7 +74,7 @@ R0 = np.zeros(k)
 z0 = np.ravel([D0, R0])
 
 # Solving the ODE
-z = odeint(model, z0, t, args=(betaD, betaR, v, n, m, k, M, i_vec, j))
+z = odeint(model, z0, t, args=(betaD, betaR, v, n, m, k, M, i_vec, j_vec))
 D = z[:, :k]
 R = z[:, k:2 * k]
 

@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="playing with k">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="playing with i and j" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,8 +13,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Jupyter Notebook" />
         <option value="Python Script" />
+        <option value="Jupyter Notebook" />
       </list>
     </option>
   </component>
@@ -389,7 +387,63 @@
       <option name="project" value="LOCAL" />
       <updated>1716812974526</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="playing with i and j">
+      <option name="closed" value="true" />
+      <created>1717314497159</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1717314497159</updated>
+    </task>
+    <task id="LOCAL-00036" summary="playing with i and j">
+      <option name="closed" value="true" />
+      <created>1717322209079</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1717322209079</updated>
+    </task>
+    <task id="LOCAL-00037" summary="playing with i and j">
+      <option name="closed" value="true" />
+      <created>1717325657440</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1717325657440</updated>
+    </task>
+    <task id="LOCAL-00038" summary="playing with i and j">
+      <option name="closed" value="true" />
+      <created>1717326367797</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1717326367797</updated>
+    </task>
+    <task id="LOCAL-00039" summary="playing with i and j">
+      <option name="closed" value="true" />
+      <created>1717330187706</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1717330187706</updated>
+    </task>
+    <task id="LOCAL-00040" summary="playing with i and j">
+      <option name="closed" value="true" />
+      <created>1717332759315</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1717332759315</updated>
+    </task>
+    <task id="LOCAL-00041" summary="playing with i and j">
+      <option name="closed" value="true" />
+      <created>1717333717385</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1717333717385</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -417,15 +471,16 @@
     <MESSAGE value="fixing the cell grid" />
     <MESSAGE value="fixed the cell grid" />
     <MESSAGE value="playing with k" />
-    <option name="LAST_COMMIT_MESSAGE" value="playing with k" />
+    <MESSAGE value="playing with i and j" />
+    <option name="LAST_COMMIT_MESSAGE" value="playing with i and j" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Stability_Analysis.coverage" NAME="Stability Analysis Coverage Results" MODIFIED="1714395369678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$matplotlib_pyplot_hexbin_1.coverage" NAME="matplotlib-pyplot-hexbin-1 Coverage Results" MODIFIED="1716298655738" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Downloads" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$test.coverage" NAME="test Coverage Results" MODIFIED="1714552488478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_Cell_Grid.coverage" NAME="LI Cell Grid Coverage Results" MODIFIED="1716891705815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_Cell_Grid.coverage" NAME="LI Cell Grid Coverage Results" MODIFIED="1717333375026" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_2_Cells.coverage" NAME="LI 2 Cells Coverage Results" MODIFIED="1714328205300" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$model_factory.coverage" NAME="model_factory Coverage Results" MODIFIED="1715254120681" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$hexagons.coverage" NAME="hexagons Coverage Results" MODIFIED="1716296770775" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$hexagons.coverage" NAME="hexagons Coverage Results" MODIFIED="1717333709951" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
