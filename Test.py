@@ -45,12 +45,12 @@ def find_neighbor_hex(ind, P, Q):
 
 
 def pq2ind(p, q, P):
-    return p + q * P
+    return p + (q-1) * P
 
 
 def ind2pq(ind, P):
-    q = ind // P
-    p = ind % P
+    q = 1 + (ind-1) // P
+    p = ind - (q-1) * P
     return p, q
 
 
@@ -66,7 +66,7 @@ betaD = 10
 betaR = 10
 v = 1
 M = get_connectivity_matrix(P, Q, w)
-i = 100
+i = 1
 j = 1
 
 # Initial conditions
