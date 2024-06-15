@@ -4,7 +4,6 @@ import matplotlib.patches as patches
 import scienceplots
 from scipy.integrate import odeint
 
-
 def model(z, t, betaD, betaR, v, n, m, k, M, i, j):
     D = z[:k]
     R = z[k:2*k]
@@ -15,7 +14,6 @@ def model(z, t, betaD, betaR, v, n, m, k, M, i, j):
     dRdt = g_D - R
     return np.ravel([dDdT, dRdt])
 
-
 def get_connectivity_matrix(P, Q, w):
     k = P * Q
     M = np.zeros((k, k))
@@ -25,34 +23,40 @@ def get_connectivity_matrix(P, Q, w):
         for r in range(6):
             M[s, neighbors[r]] = w
 
-    # np.fill_diagonal(M, 0)
     return M
-
 
 def find_neighbor_hex(ind, P, Q):
     p, q = ind2pq(ind, P)
+    qleft = ((q-2) % Q) + 1
+    qright = (q % Q) + 1
+    if q % 2 == 1:  # odd q
+        pup = p
+        pdown = ((p-2) % P) + 1
+    else:  # even q
+        pup = (p % P) + 1
+        pdown = p
 
     neighbors = [
-        (p, (q - 1) % Q),  # top
-        (p, (q + 1) % Q),  # bottom
-        ((p + 1) % P, q if q % 2 == 0 else (q - 1) % Q),  # top-right / bottom-right
-        ((p - 1) % P, q if q % 2 == 0 else (q - 1) % Q),  # top-left / bottom-left
-        ((p + 1) % P, (q + 1) % Q if q % 2 != 0 else q),  # bottom-right / top-right
-        ((p - 1) % P, (q + 1) % Q if q % 2 != 0 else q)  # bottom-left / top-left
+        pq2ind((p % P) + 1, q, P),  # top
+        pq2ind(((p - 2) % P) + 1, q, P),  # bottom
+        pq2ind(pdown, qleft, P),  # bottom-left
+        pq2ind(pup, qleft, P),  # top-left
+        pq2ind(pup, qright, P),  # top-right
+        pq2ind(pdown, qright, P)  # bottom-right
     ]
 
-    return [pq2ind(x, y, P) for x, y in neighbors]
+    # Ensure all indices are within the valid range
+    neighbors = [(n - 1) % (P * Q) for n in neighbors]
 
+    return neighbors
 
 def pq2ind(p, q, P):
-    return p + (q-1) * P
-
+    return (p-1) + (q-1) * P
 
 def ind2pq(ind, P):
-    q = 1 + (ind-1) // P
-    p = ind - (q-1) * P
+    q = 1 + (ind // P)
+    p = 1 + (ind % P)
     return p, q
-
 
 # Setting up the parameters
 t = np.linspace(0, 30, 300)
@@ -91,7 +95,6 @@ fig.text(0.04, 0.5, 'Concentration [a.u]', va='center', rotation='vertical')
 fig.suptitle('Lateral Inhibition Model for a Grid of Cells')
 plt.show()
 
-
 # Plotting Hexagons
 def draw_hexagonal_lattice(values, P, Q):
     fig, ax = plt.subplots()
@@ -122,7 +125,6 @@ def draw_hexagonal_lattice(values, P, Q):
     ax.autoscale()
     ax.axis('off')
     plt.show()
-
 
 draw_hexagonal_lattice(D[-1, :], P, Q)
 draw_hexagonal_lattice(R[-1, :], P, Q)
