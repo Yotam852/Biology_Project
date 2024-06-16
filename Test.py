@@ -1,130 +1,253 @@
+# Copyright (C) 2014, David Sprinzak
+# This program is part of Lateral Inhibition Tutorial.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import scienceplots
-from scipy.integrate import odeint
+from scipy.integrate import ode
 
-def model(z, t, betaD, betaR, v, n, m, k, M, i, j):
-    D = z[:k]
-    R = z[k:2*k]
-    D_n = M @ D
-    f_R = betaD * i ** n / (i ** n + R ** n)
-    g_D = betaR * D_n ** m / (j ** m + D_n ** m)
-    dDdT = v * f_R - D
-    dRdt = g_D - R
-    return np.ravel([dDdT, dRdt])
+def multicell_LI(params=None):
+    """
+    multicell_LI simulates lateral inhibition in a hexagonal lattice.
+    The structure params contains the model parameters of the system.
+    TOUT is a vector containing the time points of the solution
+    between 0 and Tmax. YOUT is a matrix containing the numerical
+    solution for each variable for each time point. Each row in
+    YOUT is a vector of the size of TOUT. F is a movie of the simulation.
+    """
+    Tmax = 30  # set time for simulation
+    tspan = [0, Tmax]
 
-def get_connectivity_matrix(P, Q, w):
-    k = P * Q
-    M = np.zeros((k, k))
+    # get the default parameters if none provided
+    if params is None:
+        params = defaultparams()
+
+    P = params['P']  # number of cells per column
+    Q = params['Q']  # number of columns - MUST BE EVEN
+    k = P * Q  # number of cells
+
+    # get the connectivity matrix
+    params['connectivity'] = getconnectivityM(P, Q)
+
+    # setting the initial conditions + noise
+    y0 = getIC(params, k)
+
+    # run simulation with lateral inhibition
+    r = ode(li).set_integrator('vode', method='bdf')
+    r.set_initial_value(y0, tspan[0])
+    r.set_f_params(params)
+
+    tout = []
+    yout = []
+    while r.successful() and r.t < tspan[1]:
+        r.integrate(tspan[1])
+        tout.append(r.t)
+        yout.append(r.y)
+
+    tout = np.array(tout)
+    yout = np.array(yout)
+
+    # show time traces of two cells with lateral inhibition
+    plot2cells(tout, yout, k)
+
+    # show lattice simulation
+    F = movielattice(tout, yout, P, Q, k)
+
+    return yout, tout, params, F
+
+def li(t, y, params):
+    """
+    Differential equations for Delta and repressor levels.
+    """
+    nu = params['nu']
+    betaD = params['betaD']
+    betaR = params['betaR']
+    h = params['h']
+    m = params['m']
+    f = params['f']
+    g = params['g']
+    M = params['connectivity']
+    k = len(M)
+
+    D = y[:k]  # levels of Delta in cells 1 to k
+    R = y[k:]  # levels of Repressor in cells 1 to k
+    Dneighbor = M @ y[:k]  # average Delta level in the neighboring cells
+
+    dD = nu * (betaD * f**h / (f**h + R**h) - D)
+    dR = betaR * Dneighbor**m / (g**m + Dneighbor**m) - R
+    dy = np.concatenate((dD, dR))
+
+    return dy
+
+def defaultparams():
+    """
+    Default parameter values for the simulation.
+    """
+    params = {
+        'nu': 1,  # ratio of degradation rates
+        'betaD': 50,  # normalized Delta production
+        'betaR': 50,  # normalized repressor production
+        'h': 3,  # Hill coefficient repression function
+        'm': 3,  # Hill coefficient activating function
+        'sigma': 0.2,  # noise amplitude in initial conditions
+        'P': 10,  # number of cells per column
+        'Q': 10,  # number of columns - MUST BE EVEN
+        'f': 1,
+        'g': 1
+    }
+    return params
+
+def getconnectivityM(P, Q):
+    """
+    Calculate the connectivity matrix for the hexagonal lattice.
+    """
+    k = P * Q  # number of cells
+    M = np.zeros((k, k))  # connectivity matrix
+    w = 1 / 6  # weight for interactions
 
     for s in range(k):
-        neighbors = find_neighbor_hex(s, P, Q)
-        for r in range(6):
-            M[s, neighbors[r]] = w
+        kneighbor = findneighborhex(s, P, Q)
+        for r in kneighbor:
+            M[s, r-1] = w
 
     return M
 
-def find_neighbor_hex(ind, P, Q):
+def getIC(params, k):
+    """
+    Generate initial conditions for Delta and repressor levels.
+    """
+    U = np.random.rand(k) - 0.5  # a uniform random distribution
+    epsilon = 1e-5  # multiplicative factor of Delta initial condition
+    D0 = epsilon * params['betaD'] * (1 + params['sigma'] * U)  # initial Delta levels
+    R0 = np.zeros(k)  # initial repressor levels
+    y0 = np.concatenate((D0, R0))  # vector of initial conditions
+
+    return y0
+
+def plot2cells(tout, yout, k):
+    """
+    Plot the time traces of Delta and repressor levels for two cells.
+    """
+    plt.figure(21)
+    plt.clf()
+    for i in range(2):
+        plt.subplot(1, 2, i + 1)
+        plt.plot(tout, yout[:, i], '-r', linewidth=2)  # plot Delta levels
+        plt.plot(tout, yout[:, k + i], '-b', linewidth=2)  # plot repressor levels
+        plt.title(f'cell #{i + 1}')
+        plt.xlabel('t [a.u]')
+        plt.ylabel('concentration [a.u]')
+        plt.legend(['d', 'r'])
+
+def findneighborhex(ind, P, Q):
+    """
+    Find the 6 neighbors of a cell in the hexagonal lattice.
+    """
     p, q = ind2pq(ind, P)
-    qleft = ((q-2) % Q) + 1
-    qright = (q % Q) + 1
-    if q % 2 == 1:  # odd q
+
+    # above and below
+    out = [pq2ind(p % P + 1, q, P),
+           pq2ind((p-2) % P + 1, q, P)]
+
+    # left and right sides
+    qleft = (q-2) % Q + 1
+    qright = q % Q + 1
+
+    if q // 2 != q / 2:
         pup = p
-        pdown = ((p-2) % P) + 1
-    else:  # even q
-        pup = (p % P) + 1
+        pdown = (p-2) % P + 1
+    else:
+        pup = p % P + 1
         pdown = p
 
-    neighbors = [
-        pq2ind((p % P) + 1, q, P),  # top
-        pq2ind(((p - 2) % P) + 1, q, P),  # bottom
-        pq2ind(pdown, qleft, P),  # bottom-left
-        pq2ind(pup, qleft, P),  # top-left
-        pq2ind(pup, qright, P),  # top-right
-        pq2ind(pdown, qright, P)  # bottom-right
-    ]
+    out.extend([pq2ind(pup, qleft, P),
+                pq2ind(pdown, qleft, P),
+                pq2ind(pup, qright, P),
+                pq2ind(pdown, qright, P)])
 
-    # Ensure all indices are within the valid range
-    neighbors = [(n - 1) % (P * Q) for n in neighbors]
-
-    return neighbors
+    return out
 
 def pq2ind(p, q, P):
-    return (p-1) + (q-1) * P
+    """
+    Convert (p, q) coordinates to a linear index.
+    """
+    return p + (q - 1) * P
 
 def ind2pq(ind, P):
-    q = 1 + (ind // P)
-    p = 1 + (ind % P)
+    """
+    Convert a linear index to (p, q) coordinates.
+    """
+    q = 1 + (ind - 1) // P
+    p = ind - (q - 1) * P
     return p, q
 
-# Setting up the parameters
-t = np.linspace(0, 30, 300)
-n = 3
-m = 3
-P = 10
-Q = 10
+def plotHexagon(p0, q0, c):
+    """
+    Plot a hexagon centered at coordinates (p, q) with color c.
+    """
+    s32 = np.sqrt(3) / 4
+    q = q0 * 3 / 4
+    p = p0 * 2 * s32
+    if q0 // 2 == q0 / 2:
+        p = p + s32
+
+    x = [q - 0.5, q - 0.25, q + 0.25, q + 0.5, q + 0.25, q - 0.25]
+    y = [p, p + s32, p + s32, p, p - s32, p - s32]
+
+    plt.fill(x, y, color=c, linewidth=2)
+
+def movielattice(tout, yout, P, Q, k):
+    """
+    Generate a movie of patterning in the hexagonal lattice.
+    The color represents the level of Delta.
+    """
+    Cmax = np.max(yout[:, :k])  # find max(Delta) at the end point
+    frames = []
+
+    for tind in range(0, len(tout), 5):  # show every 5th frame
+        plt.figure(22)
+        plt.clf()
+        for i in range(P):
+            for j in range(Q):
+                ind = pq2ind(i + 1, j + 1, P)
+                mycolor = min([yout[tind, ind] / Cmax, 1])
+                plotHexagon(i + 1, j + 1, [1 - mycolor, 1 - mycolor, 1])
+
+        plt.axis('image')
+        plt.axis('off')
+        plt.box(False)
+
+        frames.append(plt.gcf().canvas.copy_from_bbox(plt.gcf().bbox))
+
+    return frames
+
+# Example usage
+yout, tout, params, F = multicell_LI()
+plt.figure()
+P = params['P']
+Q = params['Q']
 k = P * Q
-w = 1 / 6
-betaD = 10
-betaR = 10
-v = 1
-M = get_connectivity_matrix(P, Q, w)
-i = 1
-j = 1
+Cmax = np.max(yout[:, :k])  # find max(Delta) at the end point
 
-# Initial conditions
-D0 = 1e-5 * np.random.random(k)
-R0 = np.zeros(k)
-z0 = np.ravel([D0, R0])
+for i in range(P):
+    for j in range(Q):
+        ind = pq2ind(i + 1, j + 1, P)
+        mycolor = min([yout[-1, ind] / Cmax, 1])  # Use the last time point
+        plotHexagon(i + 1, j + 1, [1 - mycolor, 1 - mycolor, 1])
 
-# Solving the ODE
-z = odeint(model, z0, t, args=(betaD, betaR, v, n, m, k, M, i, j))
-D = z[:, :k]
-R = z[:, k:2 * k]
-
-# Plotting Concentrations
-plt.style.use(['science', 'notebook', 'grid'])
-fig, ax = plt.subplots(1, 2, sharex=True, figsize=(8, 6))
-ax[0].plot(t, D[:, :2])
-ax[0].legend(['D1', 'D2'])
-ax[1].plot(t, R[:, :2])
-ax[1].legend(['R1', 'R2'])
-fig.text(0.5, 0.04, 'Time [a.u]', ha='center')
-fig.text(0.04, 0.5, 'Concentration [a.u]', va='center', rotation='vertical')
-fig.suptitle('Lateral Inhibition Model for a Grid of Cells')
+plt.axis('image')
+plt.axis('off')
+plt.box(False)
+plt.title('Final Delta Pattern')
 plt.show()
-
-# Plotting Hexagons
-def draw_hexagonal_lattice(values, P, Q):
-    fig, ax = plt.subplots()
-    ax.set_aspect('equal')
-    hex_radius = 1
-    hex_height = np.sqrt(3) * hex_radius
-    hex_width = 2 * hex_radius
-
-    def hexagon(x_center, y_center, color):
-        hexagon = patches.RegularPolygon((x_center, y_center), numVertices=6, radius=hex_radius,
-                                         orientation=np.radians(30), edgecolor='k')
-        hexagon.set_facecolor(color)
-        ax.add_patch(hexagon)
-
-    norm = plt.Normalize(min(values), max(values))
-    cmap = plt.get_cmap('viridis')
-
-    index = 0
-    for q in range(Q):
-        for p in range(P):
-            if index < len(values):
-                x = q * hex_width * 0.75
-                y = p * hex_height + (q % 2) * (hex_height / 2)
-                color = cmap(norm(values[index]))
-                hexagon(x, y, color)
-                index += 1
-
-    ax.autoscale()
-    ax.axis('off')
-    plt.show()
-
-draw_hexagonal_lattice(D[-1, :], P, Q)
-draw_hexagonal_lattice(R[-1, :], P, Q)
