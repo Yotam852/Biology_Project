@@ -1,128 +1,167 @@
 import numpy as np
+from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import scienceplots
-from scipy.integrate import odeint
 
 
-def model(z, t, betaD, betaR, v, n, m, k, M, i, j):
-    D = z[:k]
-    R = z[k:2*k]
-    D_n = M @ D
-    f_R = betaD * i ** n / (i ** n + R ** n)
-    g_D = betaR * D_n ** m / (j ** m + D_n ** m)
-    dDdT = v * f_R - D
-    dRdt = g_D - R
-    return np.ravel([dDdT, dRdt])
+def multicell_LI(params=None):
+    Tmax = 30
+    tspan = np.linspace(0, Tmax, 500)
+
+    if params is None:
+        params = defaultparams()
+
+    P = params['P']
+    Q = params['Q']
+    k = P * Q
+
+    params['connectivity'] = getconnectivityM(P, Q)
+
+    y0 = getIC(params, k)
+
+    yout = odeint(li, y0, tspan, args=(params,))
+
+    plot2cells(tspan, yout, k)
+
+    plot_final_lattice(tspan, yout, P, Q, k)
+
+    return yout, tspan, params
 
 
-def get_connectivity_matrix(P, Q, w):
+def li(y, t, params):
+    nu = params['nu']
+    betaD = params['betaD']
+    betaR = params['betaR']
+    h = params['h']
+    m = params['m']
+    f = params['f']
+    g = params['g']
+    M = params['connectivity']
+    k = len(M)
+
+    D = y[:k]
+    R = y[k:2 * k]
+    Dneighbor = np.dot(M, y[:k])
+
+    dD = nu * (0.1 + (betaD * f ** h / (f ** h + R ** h)) - D)
+    dR = betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
+
+    return np.concatenate((dD, dR))
+
+
+def defaultparams():
+    return {
+        'nu': 1,
+        'betaD': 10,
+        'betaR': 10,
+        'h': 3,
+        'm': 3,
+        'sigma': 0.2,
+        'P': 10,
+        'Q': 10,
+        'f': 1,
+        'g': 1
+    }
+
+
+def getconnectivityM(P, Q):
     k = P * Q
     M = np.zeros((k, k))
+    w = 1 / 6
 
     for s in range(k):
-        neighbors = find_neighbor_hex(s, P, Q)
+        kneighbor = findneighborhex(s, P, Q)
         for r in range(6):
-            M[s, neighbors[r]] = w
+            M[s, kneighbor[r]] = w
 
-    # np.fill_diagonal(M, 0)
     return M
 
 
-def find_neighbor_hex(ind, P, Q):
+def getIC(params, k):
+    U = np.random.rand(k) - 0.5
+    epsilon = 1e-5
+    D0 = epsilon * params['betaD'] * (1 + params['sigma'] * U)
+    R0 = np.zeros(k)
+
+    return np.concatenate((D0, R0))
+
+
+def plot2cells(tout, yout, k):
+    plt.figure()
+    for i in range(2):
+        plt.subplot(1, 2, i + 1)
+        plt.plot(tout, yout[:, i], '-r', linewidth=2)
+        plt.plot(tout, yout[:, k + i], '-b', linewidth=2)
+        plt.title(f'cell #{i + 1}')
+        plt.xlabel('t [a.u]')
+        plt.ylabel('concentration [a.u]')
+        plt.legend(['d', 'r'])
+    plt.show()
+
+
+def findneighborhex(ind, P, Q):
     p, q = ind2pq(ind, P)
 
-    neighbors = [
-        (p, (q - 1) % Q),  # top
-        (p, (q + 1) % Q),  # bottom
-        ((p + 1) % P, q if q % 2 == 0 else (q - 1) % Q),  # top-right / bottom-right
-        ((p - 1) % P, q if q % 2 == 0 else (q - 1) % Q),  # top-left / bottom-left
-        ((p + 1) % P, (q + 1) % Q if q % 2 != 0 else q),  # bottom-right / top-right
-        ((p - 1) % P, (q + 1) % Q if q % 2 != 0 else q)  # bottom-left / top-left
-    ]
+    out = [0] * 6
+    out[0] = pq2ind((p % P) + 1, q, P)
+    out[1] = pq2ind((p - 2) % P + 1, q, P)
 
-    return [pq2ind(x, y, P) for x, y in neighbors]
+    qleft = (q - 2) % Q + 1
+    qright = q % Q + 1
+
+    if q % 2 != 0:
+        pup = p
+        pdown = (p - 2) % P + 1
+    else:
+        pup = (p % P) + 1
+        pdown = p
+
+    out[2] = pq2ind(pup, qleft, P)
+    out[3] = pq2ind(pdown, qleft, P)
+    out[4] = pq2ind(pup, qright, P)
+    out[5] = pq2ind(pdown, qright, P)
+
+    return out
 
 
 def pq2ind(p, q, P):
-    return p + q * P
+    return p + (q - 1) * P - 1
 
 
 def ind2pq(ind, P):
-    q = ind // P
-    p = ind - q * P
+    q = 1 + (ind // P)
+    p = ind % P + 1
     return p, q
 
 
-# Setting up the parameters
-t = np.linspace(0, 30, 300)
-n = 3
-m = 3
-P = 10
-Q = 10
-k = P * Q
-w = 1 / 6
-betaD = 10
-betaR = 10
-v = 1
-M = get_connectivity_matrix(P, Q, w)
-i = 1
-j = 1
+def plotHexagon(p0, q0, c, ax):
+    s32 = np.sqrt(3) / 4
+    q = q0 * 3 / 4
+    p = p0 * 2 * s32
 
-# Initial conditions
-D0 = 1e-5 * np.random.random(k)
-R0 = np.zeros(k)
-z0 = np.ravel([D0, R0])
+    if q0 % 2 == 0:
+        p += s32
 
-# Solving the ODE
-z = odeint(model, z0, t, args=(betaD, betaR, v, n, m, k, M, i, j))
-D = z[:, :k]
-R = z[:, k:2 * k]
+    x = [q - .5, q - .25, q + .25, q + .5, q + .25, q - .25]
+    y = [p, p + s32, p + s32, p, p - s32, p - s32]
 
-# Plotting Concentrations
-plt.style.use(['science', 'notebook', 'grid'])
-fig, ax = plt.subplots(1, 2, sharex=True, figsize=(8, 6))
-ax[0].plot(t, D[:, :2])
-ax[0].legend(['D1', 'D2'])
-ax[1].plot(t, R[:, :2])
-ax[1].legend(['R1', 'R2'])
-fig.text(0.5, 0.04, 'Time [a.u]', ha='center')
-fig.text(0.04, 0.5, 'Concentration [a.u]', va='center', rotation='vertical')
-fig.suptitle('Lateral Inhibition Model for a Grid of Cells')
-plt.show()
+    polygon = patches.Polygon(np.c_[x, y], closed=True, edgecolor='black', facecolor=c)
+    ax.add_patch(polygon)
 
 
-# Plotting Hexagons
-def draw_hexagonal_lattice(values, P, Q):
+def plot_final_lattice(tout, yout, P, Q, k):
     fig, ax = plt.subplots()
-    ax.set_aspect('equal')
-    hex_radius = 1
-    hex_height = np.sqrt(3) * hex_radius
-    hex_width = 2 * hex_radius
-
-    def hexagon(x_center, y_center, color):
-        hexagon = patches.RegularPolygon((x_center, y_center), numVertices=6, radius=hex_radius,
-                                         orientation=np.radians(30), edgecolor='k')
-        hexagon.set_facecolor(color)
-        ax.add_patch(hexagon)
-
-    norm = plt.Normalize(min(values), max(values))
-    cmap = plt.get_cmap('winter')
-
-    index = 0
-    for q in range(Q):
-        for p in range(P):
-            if index < len(values):
-                x = q * hex_width * 0.75
-                y = p * hex_height + (q % 2) * (hex_height / 2)
-                color = cmap(norm(values[index]))
-                hexagon(x, y, color)
-                index += 1
-
-    ax.autoscale()
+    Cmax = np.max(yout[-1, :k])
+    tind = -1  # last time point
+    for i in range(1, P + 1):
+        for j in range(1, Q + 1):
+            ind = pq2ind(i, j, P)
+            mycolor = min([yout[tind, ind] / Cmax, 1])
+            plotHexagon(i, j, [1 - mycolor, 1 - mycolor, 1], ax)
+    ax.axis('equal')
     ax.axis('off')
     plt.show()
 
 
-draw_hexagonal_lattice(D[-1, :], P, Q)
-draw_hexagonal_lattice(R[-1, :], P, Q)
+if __name__ == "__main__":
+    yout, tout, params = multicell_LI()
