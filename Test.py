@@ -21,10 +21,6 @@ def multicell_LI(params=None):
 
     yout = odeint(li, y0, tspan, args=(params,))
 
-    plot2cells(tspan, yout, k)
-
-    plot_final_lattice(tspan, yout, P, Q, k)
-
     return yout, tspan, params
 
 
@@ -59,7 +55,7 @@ def defaultparams():
         'sigma': 0.2,
         'P': 10,
         'Q': 10,
-        'f': 1,
+        'f': 100,
         'g': 1
     }
 
@@ -84,19 +80,6 @@ def getIC(params, k):
     R0 = np.zeros(k)
 
     return np.concatenate((D0, R0))
-
-
-def plot2cells(tout, yout, k):
-    plt.figure()
-    for i in range(2):
-        plt.subplot(1, 2, i + 1)
-        plt.plot(tout, yout[:, i], '-r', linewidth=2)
-        plt.plot(tout, yout[:, k + i], '-b', linewidth=2)
-        plt.title(f'cell #{i + 1}')
-        plt.xlabel('t [a.u]')
-        plt.ylabel('concentration [a.u]')
-        plt.legend(['d', 'r'])
-    plt.show()
 
 
 def findneighborhex(ind, P, Q):
@@ -163,5 +146,39 @@ def plot_final_lattice(tout, yout, P, Q, k):
     plt.show()
 
 
+def run_simulations():
+    f_values = np.linspace(0.01, 2, 100)
+    D_ratios = []
+    pattern_start = None
+    pattern_end = None
+
+    for f in f_values:
+        params = defaultparams()
+        params['f'] = f
+        yout, tout, params = multicell_LI(params)
+
+        D = yout[-1, :params['P'] * params['Q']]
+        D_max = np.max(D)
+        D_min = np.min(D)
+
+        ratio = D_max / D_min
+        D_ratios.append(ratio)
+
+        if ratio > 2:
+            if pattern_start is None:
+                pattern_start = f
+            pattern_end = f
+
+    plt.figure()
+    plt.plot(f_values, D_ratios, '-o')
+    plt.xlabel('f')
+    plt.ylabel('$D_{max} / D_{min}$')
+    plt.title('$D_{max} / D_{min}$ as a function of f')
+    plt.show()
+
+    print(f'Patterning starts at f = {pattern_start}')
+    print(f'Patterning ends at f = {pattern_end}')
+
+
 if __name__ == "__main__":
-    yout, tout, params = multicell_LI()
+    run_simulations()
