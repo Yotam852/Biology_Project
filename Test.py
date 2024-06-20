@@ -147,7 +147,7 @@ def plot_final_lattice(tout, yout, P, Q, k):
 
 
 def run_simulations():
-    f_values = np.linspace(0.01, 2, 100)
+    f_values = np.linspace(0.01, 10, 100)
     D_ratios = []
     pattern_start = None
     pattern_end = None
@@ -170,7 +170,7 @@ def run_simulations():
             pattern_end = f
 
     plt.figure()
-    plt.plot(f_values, D_ratios, '-o')
+    plt.semilogx(f_values, D_ratios, '-o')
     plt.xlabel('f')
     plt.ylabel('$D_{max} / D_{min}$')
     plt.title('$D_{max} / D_{min}$ as a function of f')
