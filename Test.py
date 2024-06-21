@@ -2,6 +2,7 @@ import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import scienceplots
 
 
 def multicell_LI(params=None):
@@ -33,13 +34,14 @@ def li(y, t, params):
     f = params['f']
     g = params['g']
     M = params['connectivity']
+    beta0 = params['beta0']
     k = len(M)
 
     D = y[:k]
     R = y[k:2 * k]
     Dneighbor = np.dot(M, y[:k])
 
-    dD = nu * (0.1 + (betaD * f ** h / (f ** h + R ** h)) - D)
+    dD = nu * (beta0 + (betaD * f ** h / (f ** h + R ** h)) - D)
     dR = betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
 
     return np.concatenate((dD, dR))
@@ -56,7 +58,8 @@ def defaultparams():
         'P': 10,
         'Q': 10,
         'f': 100,
-        'g': 1
+        'g': 1,
+        'beta0': 0.1
     }
 
 
@@ -170,9 +173,10 @@ def run_simulations():
             pattern_end = f
 
     plt.figure()
+    plt.style.use(['science', 'notebook', 'grid'])
     plt.semilogx(f_values, D_ratios, '-o')
-    plt.xlabel('f')
-    plt.ylabel('$D_{max} / D_{min}$')
+    plt.xlabel('f [a.u]')
+    plt.ylabel('$D_{max} / D_{min}$ [a.u]')
     plt.title('$D_{max} / D_{min}$ as a function of f')
     plt.show()
 
