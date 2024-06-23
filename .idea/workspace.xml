@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="the code is working!">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_6_13_2024_2_48_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_6_13_2024_2_48_PM__Changes_.xml" beforeDir="false" />
+    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="fixing the grid model">
+      <change beforePath="$PROJECT_DIR$/.idea/Biology Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Biology Project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_6_23_2024_10_51_AM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_6_23_2024_10_51_AM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hexagons.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +20,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="Jupyter Notebook" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -74,7 +74,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -123,14 +123,15 @@
       <workItem from="1716707616234" duration="7458000" />
       <workItem from="1716921629145" duration="9082000" />
       <workItem from="1717859942737" duration="327000" />
-      <workItem from="1717861608464" duration="3267000" />
-      <workItem from="1718783140540" duration="92000" />
-      <workItem from="1718783246216" duration="8096000" />
-      <workItem from="1718802132408" duration="2544000" />
-      <workItem from="1718809042939" duration="629000" />
-      <workItem from="1718862241546" duration="65000" />
-      <workItem from="1718877236991" duration="45000" />
-      <workItem from="1718877299142" duration="1058000" />
+      <workItem from="1717861608464" duration="3972000" />
+      <workItem from="1718343823157" duration="39000" />
+      <workItem from="1718343874284" duration="4469000" />
+      <workItem from="1718433253732" duration="35000" />
+      <workItem from="1718433302047" duration="8999000" />
+      <workItem from="1718461053878" duration="81000" />
+      <workItem from="1718461983616" duration="749000" />
+      <workItem from="1718518692340" duration="7344000" />
+      <workItem from="1718529391635" duration="1748000" />
     </task>
     <task id="LOCAL-00001" summary="note">
       <option name="closed" value="true" />
@@ -484,23 +485,39 @@
       <option name="project" value="LOCAL" />
       <updated>1717914800989</updated>
     </task>
-    <task id="LOCAL-00045" summary="the code is working!">
+    <task id="LOCAL-00045" summary="checking steady states">
       <option name="closed" value="true" />
-      <created>1718785046391</created>
+      <created>1717920405725</created>
       <option name="number" value="00045" />
       <option name="presentableId" value="LOCAL-00045" />
       <option name="project" value="LOCAL" />
-      <updated>1718785046391</updated>
+      <updated>1717920405725</updated>
     </task>
-    <task id="LOCAL-00046" summary="the code is working!">
+    <task id="LOCAL-00046" summary="checking steady states">
       <option name="closed" value="true" />
-      <created>1718862291279</created>
+      <created>1717920410720</created>
       <option name="number" value="00046" />
       <option name="presentableId" value="LOCAL-00046" />
       <option name="project" value="LOCAL" />
-      <updated>1718862291279</updated>
+      <updated>1717920410721</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="fixing the grid model">
+      <option name="closed" value="true" />
+      <created>1718442023147</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1718442023147</updated>
+    </task>
+    <task id="LOCAL-00048" summary="fixing the grid model">
+      <option name="closed" value="true" />
+      <created>1718460139102</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1718460139102</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -531,17 +548,17 @@
     <MESSAGE value="almost done with the hexagons" />
     <MESSAGE value="playing with i and j (hill parameters)" />
     <MESSAGE value="checking steady states" />
-    <MESSAGE value="the code is working!" />
-    <option name="LAST_COMMIT_MESSAGE" value="the code is working!" />
+    <MESSAGE value="fixing the grid model" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing the grid model" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Stability_Analysis.coverage" NAME="Stability Analysis Coverage Results" MODIFIED="1714395369678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Test.coverage" NAME="Test Coverage Results" MODIFIED="1719129262959" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$test.coverage" NAME="test Coverage Results" MODIFIED="1714552488478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_Cell_Grid.coverage" NAME="LI Cell Grid Coverage Results" MODIFIED="1718809058356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$model_factory.coverage" NAME="model_factory Coverage Results" MODIFIED="1715254120681" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_2_Cells.coverage" NAME="LI 2 Cells Coverage Results" MODIFIED="1714328205300" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$hexagons.coverage" NAME="hexagons Coverage Results" MODIFIED="1717070710344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Model.coverage" NAME="Model Coverage Results" MODIFIED="1719129410055" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Model.coverage" NAME="Model Coverage Results" MODIFIED="1719167822214" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Stability_Analysis.coverage" NAME="Stability Analysis Coverage Results" MODIFIED="1714395369678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$test.coverage" NAME="test Coverage Results" MODIFIED="1714552488478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Test.coverage" NAME="Test Coverage Results" MODIFIED="1718947166233" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$hexagons.coverage" NAME="hexagons Coverage Results" MODIFIED="1718365271446" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_2_Cells.coverage" NAME="LI 2 Cells Coverage Results" MODIFIED="1718460115805" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_Cell_Grid.coverage" NAME="LI Cell Grid Coverage Results" MODIFIED="1718530300154" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

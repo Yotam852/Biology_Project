@@ -150,7 +150,7 @@ def plot_final_lattice(tout, yout, P, Q, k):
 
 
 def run_simulations():
-    f_values = np.logspace(np.log(0.01), np.log(10), 50)
+    f_values = np.logspace(np.log(0.01), np.log(10), 100)
     D_ratios = []
     pattern_start = None
     pattern_end = None
