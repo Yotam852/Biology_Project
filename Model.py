@@ -194,7 +194,7 @@ def run_simulations():
                     pattern_start_beta0 = beta0
                 pattern_end_beta0 = beta0
 
-        # print(f"beta0: {beta0}, f: {f}, D_max: {D_max}, D_min: {D_min}, ratio: {ratio}")
+            print(f"beta0: {beta0}, f: {f}, D_max: {D_max}, D_min: {D_min}, ratio: {ratio}")
 
     # Plotting D_max/D_min as a function of f
     plt.figure()
