@@ -2,7 +2,7 @@ import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-
+import scienceplots
 
 def multicell_LI(params=None):
     Tmax = 30
@@ -36,6 +36,7 @@ def li(y, t, params):
     m = params['m']
     f = params['f']
     g = params['g']
+    beta0 = params['beta0']
     M = params['connectivity']
     k = len(M)
 
@@ -43,7 +44,7 @@ def li(y, t, params):
     R = y[k:2 * k]
     Dneighbor = np.dot(M, y[:k])
 
-    dD = nu * (0.1 + (betaD * f ** h / (f ** h + R ** h)) - D)
+    dD = nu * (beta0 + (betaD * f ** h / (f ** h + R ** h)) - D)
     dR = betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
 
     return np.concatenate((dD, dR))
@@ -60,7 +61,8 @@ def defaultparams():
         'P': 10,
         'Q': 10,
         'f': 1,
-        'g': 1
+        'g': 1,
+        'beta0': 0.1
     }
 
 
