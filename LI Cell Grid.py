@@ -90,6 +90,7 @@ def getIC(params, k):
 
 def plot2cells(tout, yout, k):
     plt.figure()
+    plt.style.use(['science', 'notebook', 'grid'])
     for i in range(2):
         plt.subplot(1, 2, i + 1)
         plt.plot(tout, yout[:, i], '-r', linewidth=2)
