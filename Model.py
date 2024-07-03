@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import scienceplots
 
+
 def multicell_LI(params=None):
     Tmax = 30
     tspan = np.linspace(0, Tmax, 500)
@@ -22,6 +23,7 @@ def multicell_LI(params=None):
     yout = odeint(li, y0, tspan, args=(params,))
 
     return yout, tspan, params
+
 
 def li(y, t, params):
     nu = params['nu']
@@ -44,6 +46,7 @@ def li(y, t, params):
 
     return np.concatenate((dD, dR))
 
+
 def defaultparams():
     return {
         'nu': 1,
@@ -59,6 +62,7 @@ def defaultparams():
         'beta0': 0.1  # Default value for beta0
     }
 
+
 def getconnectivityM(P, Q):
     k = P * Q
     M = np.zeros((k, k))
@@ -71,6 +75,7 @@ def getconnectivityM(P, Q):
 
     return M
 
+
 def getIC(params, k):
     U = np.random.rand(k) - 0.5
     epsilon = 1e-5
@@ -78,6 +83,7 @@ def getIC(params, k):
     R0 = np.zeros(k)
 
     return np.concatenate((D0, R0))
+
 
 def findneighborhex(ind, P, Q):
     p, q = ind2pq(ind, P)
@@ -103,13 +109,16 @@ def findneighborhex(ind, P, Q):
 
     return out
 
+
 def pq2ind(p, q, P):
     return p + (q - 1) * P - 1
+
 
 def ind2pq(ind, P):
     q = 1 + (ind // P)
     p = ind % P + 1
     return p, q
+
 
 def plotHexagon(p0, q0, c, ax):
     s32 = np.sqrt(3) / 4
@@ -125,6 +134,7 @@ def plotHexagon(p0, q0, c, ax):
     polygon = patches.Polygon(np.c_[x, y], closed=True, edgecolor='black', facecolor=c)
     ax.add_patch(polygon)
 
+
 def plot_final_lattice(tout, yout, P, Q, k):
     fig, ax = plt.subplots()
     Cmax = np.max(yout[-1, :k])
@@ -137,6 +147,7 @@ def plot_final_lattice(tout, yout, P, Q, k):
     ax.axis('equal')
     ax.axis('off')
     plt.show()
+
 
 def run_simulations():
     f_values = np.logspace(np.log10(0.01), np.log10(10), 50)
@@ -230,6 +241,7 @@ def run_simulations():
     print(f'Patterning ends at f = {pattern_end_f}')
     print(f'Patterning starts at beta0 = {pattern_start_beta0}')
     print(f'Patterning ends at beta0 = {pattern_end_beta0}')
+
 
 if __name__ == "__main__":
     run_simulations()
