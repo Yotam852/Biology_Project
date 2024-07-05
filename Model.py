@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import scienceplots
 
+# plt.rcParams['text.usetex'] = True
+
 
 def multicell_LI(params=None):
     Tmax = 30
@@ -14,11 +16,11 @@ def multicell_LI(params=None):
 
     P = params['P']
     Q = params['Q']
-    k = P * Q
+    n = P * Q
 
     params['connectivity'] = getconnectivityM(P, Q)
 
-    y0 = getIC(params, k)
+    y0 = getIC(params, n)
 
     yout = odeint(li, y0, tspan, args=(params,))
 
@@ -35,11 +37,11 @@ def li(y, t, params):
     g = params['g']
     M = params['connectivity']
     beta0 = params['beta0']
-    k = len(M)
+    n = len(M)
 
-    D = y[:k]
-    R = y[k:2 * k]
-    Dneighbor = np.dot(M, y[:k])
+    D = y[:n]
+    R = y[n:2 * n]
+    Dneighbor = np.dot(M, y[:n])
 
     dD = nu * (beta0 + (betaD * f ** h / (f ** h + R ** h)) - D)
     dR = betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
@@ -64,11 +66,11 @@ def defaultparams():
 
 
 def getconnectivityM(P, Q):
-    k = P * Q
-    M = np.zeros((k, k))
+    n = P * Q
+    M = np.zeros((n, n))
     w = 1 / 6
 
-    for s in range(k):
+    for s in range(n):
         kneighbor = findneighborhex(s, P, Q)
         for r in range(6):
             M[s, kneighbor[r]] = w
@@ -76,11 +78,11 @@ def getconnectivityM(P, Q):
     return M
 
 
-def getIC(params, k):
-    U = np.random.rand(k) - 0.5
+def getIC(params, n):
+    U = np.random.rand(n) - 0.5
     epsilon = 1e-5
     D0 = epsilon * params['betaD'] * (1 + params['sigma'] * U)
-    R0 = np.zeros(k)
+    R0 = np.zeros(n)
 
     return np.concatenate((D0, R0))
 
@@ -135,9 +137,9 @@ def plotHexagon(p0, q0, c, ax):
     ax.add_patch(polygon)
 
 
-def plot_final_lattice(tout, yout, P, Q, k):
+def plot_final_lattice(tout, yout, P, Q, n):
     fig, ax = plt.subplots()
-    Cmax = np.max(yout[-1, :k])
+    Cmax = np.max(yout[-1, :n])
     tind = -1  # last time point
     for i in range(1, P + 1):
         for j in range(1, Q + 1):
@@ -150,29 +152,29 @@ def plot_final_lattice(tout, yout, P, Q, k):
 
 
 def run_simulations():
-    f_values = np.logspace(np.log10(0.01), np.log10(10), 50)
+    k_values = np.logspace(np.log10(0.01), np.log10(10), 50)
     beta0_values = np.linspace(0, 1, 50)
-    D_ratios_f = np.zeros_like(f_values)  # Initialize array for f values
+    D_ratios_k = np.zeros_like(k_values)  # Initialize array for k values
     D_ratios_beta0 = np.zeros_like(beta0_values)  # Initialize array for beta0 values
-    pattern_start_f = None
-    pattern_end_f = None
+    pattern_start_k = None
+    pattern_end_k = None
     pattern_start_beta0 = None
     pattern_end_beta0 = None
 
     # Initialize the matrix for contour plot
-    D_ratios_contour = np.zeros((len(beta0_values), len(f_values)))
+    D_ratios_contour = np.zeros((len(beta0_values), len(k_values)))
 
-    # Calculate D_max/D_min as a function of f with default beta0
-    for j, f in enumerate(f_values):
+    # Calculate D_max/D_min as a function of k with default beta0
+    for j, k_value in enumerate(k_values):
         params = defaultparams()
-        params['f'] = f
+        params['f'] = k_value
         yout, tout, params = multicell_LI(params)
         D = yout[-1, :params['P'] * params['Q']]
         D_max = np.max(D)
         D_min = np.min(D)
-        D_ratios_f[j] = D_max / D_min
+        D_ratios_k[j] = D_max / D_min
 
-    # Calculate D_max/D_min as a function of beta0 with default f
+    # Calculate D_max/D_min as a function of beta0 with default k
     for i, beta0 in enumerate(beta0_values):
         params = defaultparams()
         params['beta0'] = beta0
@@ -184,10 +186,10 @@ def run_simulations():
 
     # Create the contour plot data and find pattern start/end points
     for i, beta0 in enumerate(beta0_values):
-        for j, f in enumerate(f_values):
+        for j, k_value in enumerate(k_values):
             params = defaultparams()
             params['beta0'] = beta0
-            params['f'] = f
+            params['f'] = k_value
             yout, tout, params = multicell_LI(params)
 
             D = yout[-1, :params['P'] * params['Q']]
@@ -198,47 +200,47 @@ def run_simulations():
             D_ratios_contour[i, j] = ratio
 
             if ratio > 2:
-                if pattern_start_f is None:
-                    pattern_start_f = f
-                pattern_end_f = f
+                if pattern_start_k is None:
+                    pattern_start_k = k_value
+                pattern_end_k = k_value
                 if pattern_start_beta0 is None:
                     pattern_start_beta0 = beta0
                 pattern_end_beta0 = beta0
 
-            print(f"beta0: {beta0}, f: {f}, D_max: {D_max}, D_min: {D_min}, ratio: {ratio}")
+            print(f"beta0: {beta0}, k: {k_value}, D_max: {D_max}, D_min: {D_min}, ratio: {ratio}")
 
-    # Plotting D_max/D_min as a function of f
+    # Plotting D_max/D_min as a function of k
     plt.figure()
     plt.style.use(['science', 'notebook', 'grid'])
-    plt.semilogx(f_values, D_ratios_f, '-o')
-    plt.xlabel('f [a.u]')
-    plt.ylabel('$D_{max} / D_{min}$ [a.u]')
-    plt.title('$D_{max} / D_{min}$ as a function of f')
+    plt.semilogx(k_values, D_ratios_k, '-o')
+    plt.xlabel(r'$k$ [a.u]')
+    plt.ylabel(r'$D_{max}/D_{min}$ [a.u]')
+    plt.title(r'$D_{max}/D_{min}$ as a function of $k$')
     plt.show()
 
     # Plotting D_max/D_min as a function of beta0
     plt.figure()
     plt.style.use(['science', 'notebook', 'grid'])
     plt.plot(beta0_values, D_ratios_beta0, '-o')
-    plt.xlabel('beta0 [a.u]')
-    plt.ylabel('$D_{max} / D_{min}$ [a.u]')
-    plt.title('$D_{max} / D_{min}$ as a function of beta0')
+    plt.xlabel(r'$\beta_{0}$ [a.u]')
+    plt.ylabel(r'$D_{max}/D_{min}$ [a.u]')
+    plt.title(r'$D_{max}/D_{min}$ as a function of $\beta_{0}$')
     plt.show()
 
     # Plotting the contour plot
     plt.figure()
     plt.style.use(['science', 'notebook', 'grid'])
-    f_mesh, beta0_mesh = np.meshgrid(f_values, beta0_values)
-    contour = plt.contourf(f_mesh, beta0_mesh, D_ratios_contour, levels=50, cmap='viridis')
+    k_mesh, beta0_mesh = np.meshgrid(k_values, beta0_values)
+    contour = plt.contourf(k_mesh, beta0_mesh, D_ratios_contour, levels=np.linspace(1, 100, 100), cmap='viridis')
     plt.colorbar(contour)
-    plt.xlabel('f [a.u]')
-    plt.ylabel('beta0 [a.u]')
-    plt.title('$D_{max} / D_{min}$ as a function of f and beta0')
+    plt.xlabel(r'$k$ [a.u]')
+    plt.ylabel(r'$\beta_{0}$ [a.u]')
+    plt.title(r'$D_{max}/D_{min}$ as a function of $k$ and $\beta_{0}$')
     plt.xscale('log')
     plt.show()
 
-    print(f'Patterning starts at f = {pattern_start_f}')
-    print(f'Patterning ends at f = {pattern_end_f}')
+    print(f'Patterning starts at k = {pattern_start_k}')
+    print(f'Patterning ends at k = {pattern_end_k}')
     print(f'Patterning starts at beta0 = {pattern_start_beta0}')
     print(f'Patterning ends at beta0 = {pattern_end_beta0}')
 

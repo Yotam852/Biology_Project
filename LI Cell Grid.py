@@ -13,17 +13,17 @@ def multicell_LI(params=None):
 
     P = params['P']
     Q = params['Q']
-    k = P * Q
+    n = P * Q
 
     params['connectivity'] = getconnectivityM(P, Q)
 
-    y0 = getIC(params, k)
+    y0 = getIC(params, n)
 
     yout = odeint(li, y0, tspan, args=(params,))
 
-    plot2cells(tspan, yout, k)
+    plot2cells(tspan, yout, n)
 
-    plot_final_lattice(tspan, yout, P, Q, k)
+    plot_final_lattice(tspan, yout, P, Q, n)
 
     return yout, tspan, params
 
@@ -34,17 +34,17 @@ def li(y, t, params):
     betaR = params['betaR']
     h = params['h']
     m = params['m']
-    f = params['f']
+    k = params['k']
     g = params['g']
     beta0 = params['beta0']
     M = params['connectivity']
-    k = len(M)
+    n = len(M)
 
-    D = y[:k]
-    R = y[k:2 * k]
-    Dneighbor = np.dot(M, y[:k])
+    D = y[:n]
+    R = y[n:2 * n]
+    Dneighbor = np.dot(M, y[:n])
 
-    dD = nu * (beta0 + (betaD * f ** h / (f ** h + R ** h)) - D)
+    dD = nu * (beta0 + (betaD * k ** h / (k ** h + R ** h)) - D)
     dR = betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
 
     return np.concatenate((dD, dR))
@@ -60,18 +60,18 @@ def defaultparams():
         'sigma': 0.2,
         'P': 10,
         'Q': 10,
-        'f': 1,
+        'k': 1,
         'g': 1,
         'beta0': 0.1
     }
 
 
 def getconnectivityM(P, Q):
-    k = P * Q
-    M = np.zeros((k, k))
+    n = P * Q
+    M = np.zeros((n, n))
     w = 1 / 6
 
-    for s in range(k):
+    for s in range(n):
         kneighbor = findneighborhex(s, P, Q)
         for r in range(6):
             M[s, kneighbor[r]] = w
@@ -79,22 +79,22 @@ def getconnectivityM(P, Q):
     return M
 
 
-def getIC(params, k):
-    U = np.random.rand(k) - 0.5
+def getIC(params, n):
+    U = np.random.rand(n) - 0.5
     epsilon = 1e-5
     D0 = epsilon * params['betaD'] * (1 + params['sigma'] * U)
-    R0 = np.zeros(k)
+    R0 = np.zeros(n)
 
     return np.concatenate((D0, R0))
 
 
-def plot2cells(tout, yout, k):
+def plot2cells(tout, yout, n):
     plt.figure()
     plt.style.use(['science', 'notebook', 'grid'])
     for i in range(2):
         plt.subplot(1, 2, i + 1)
         plt.plot(tout, yout[:, i], '-r', linewidth=2)
-        plt.plot(tout, yout[:, k + i], '-b', linewidth=2)
+        plt.plot(tout, yout[:, n + i], '-b', linewidth=2)
         plt.title(f'cell #{i + 1}')
         plt.xlabel('t [a.u]')
         plt.ylabel('concentration [a.u]')
@@ -152,9 +152,9 @@ def plotHexagon(p0, q0, c, ax):
     ax.add_patch(polygon)
 
 
-def plot_final_lattice(tout, yout, P, Q, k):
+def plot_final_lattice(tout, yout, P, Q, n):
     fig, ax = plt.subplots()
-    Cmax = np.max(yout[-1, :k])
+    Cmax = np.max(yout[-1, :n])
     tind = -1  # last time point
     for i in range(1, P + 1):
         for j in range(1, Q + 1):
