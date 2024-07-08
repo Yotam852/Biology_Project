@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="working on the contour plot in Test.py">
+    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="everything is working for now">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LI Cell Grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/LI Cell Grid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Stability Analysis.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Stability Analysis.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test.ipynb" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +64,7 @@
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/USER/Desktop/כוחות בין מולקולרים&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/yotam/Desktop/Biology Project&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -133,15 +130,11 @@
       <workItem from="1719828638015" duration="59000" />
       <workItem from="1719925344570" duration="3199000" />
       <workItem from="1720016809723" duration="15676000" />
-      <workItem from="1720097151794" duration="9495000" />
-    </task>
-    <task id="LOCAL-00004" summary="wrote the imports">
-      <option name="closed" value="true" />
-      <created>1713081637885</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1713081637885</updated>
+      <workItem from="1720097151794" duration="9755000" />
+      <workItem from="1720184065914" duration="16000" />
+      <workItem from="1720335690303" duration="3448000" />
+      <workItem from="1720421309671" duration="78000" />
+      <workItem from="1720421409327" duration="1017000" />
     </task>
     <task id="LOCAL-00005" summary="רוב הקוד כתוב, בינתיים שני הרכיבים של R ו- D בהתאמה יוצאים זהים, צריך לבדוק מה הבעיה">
       <option name="closed" value="true" />
@@ -527,7 +520,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720014236409</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="everything is working for now">
+      <option name="closed" value="true" />
+      <created>1720184036967</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1720184036967</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -561,17 +562,18 @@
     <MESSAGE value="the code is working!" />
     <MESSAGE value="working on the contour plot in Model.py" />
     <MESSAGE value="working on the contour plot in Test.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on the contour plot in Test.py" />
+    <MESSAGE value="everything is working for now" />
+    <option name="LAST_COMMIT_MESSAGE" value="everything is working for now" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Stability_Analysis.coverage" NAME="Stability Analysis Coverage Results" MODIFIED="1714395369678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Test_2.coverage" NAME="Test 2 Coverage Results" MODIFIED="1719736248180" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Test.coverage" NAME="Test Coverage Results" MODIFIED="1720077385619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$test.coverage" NAME="test Coverage Results" MODIFIED="1714552488478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_Cell_Grid.coverage" NAME="LI Cell Grid Coverage Results" MODIFIED="1720089857181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_Cell_Grid.coverage" NAME="LI Cell Grid Coverage Results" MODIFIED="1720335748088" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$model_factory.coverage" NAME="model_factory Coverage Results" MODIFIED="1715254120681" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_2_Cells.coverage" NAME="LI 2 Cells Coverage Results" MODIFIED="1714328205300" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_2_Cells.coverage" NAME="LI 2 Cells Coverage Results" MODIFIED="1720341715942" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$hexagons.coverage" NAME="hexagons Coverage Results" MODIFIED="1717070710344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Model.coverage" NAME="Model Coverage Results" MODIFIED="1720104876960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Model.coverage" NAME="Model Coverage Results" MODIFIED="1720421472783" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
