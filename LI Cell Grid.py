@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import scienceplots
 
+
 def multicell_LI(params=None):
     Tmax = 30
     tspan = np.linspace(0, Tmax, 500)
