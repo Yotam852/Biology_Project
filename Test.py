@@ -4,8 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import scienceplots
 
-
-def multicell_LI(params=None, k_mean_values=None):
+def multicell_LI(params=None, mean_k=1.0):
     Tmax = 30
     tspan = np.linspace(0, Tmax, 500)
 
@@ -17,20 +16,13 @@ def multicell_LI(params=None, k_mean_values=None):
     n = P * Q
 
     params['connectivity'] = getconnectivityM(P, Q)
+    params['k'] = np.random.normal(mean_k, 0.1*mean_k, n)
 
-    if k_mean_values is None:
-        k_mean_values = np.linspace(0.5, 2.0, 5)  # Example range for k means
+    y0 = getIC(params, n)
 
-    for k_mean in k_mean_values:
-        params['k_mean'] = k_mean
-        sigma = 0.1 * k_mean  # Use a smaller sigma relative to k_mean
-        params['k_values'] = np.random.normal(k_mean, sigma, n)
-        params['k_values'] = np.clip(params['k_values'], 0.01, None)  # Ensure k values are positive
+    yout = odeint(li, y0, tspan, args=(params,))
 
-        y0 = getIC(params, n)
-        yout = odeint(li, y0, tspan, args=(params,))
-
-        plot_final_lattice(tspan, yout, P, Q, n, k_mean)
+    plot_final_lattice(tspan, yout, P, Q, n, mean_k)
 
     return yout, tspan, params
 
@@ -44,14 +36,14 @@ def li(y, t, params):
     g = params['g']
     beta0 = params['beta0']
     M = params['connectivity']
-    k_values = params['k_values']
+    k = params['k']
     n = len(M)
 
     D = y[:n]
     R = y[n:2 * n]
     Dneighbor = np.dot(M, y[:n])
 
-    dD = nu * (beta0 + (betaD * k_values ** h / (k_values ** h + R ** h)) - D)
+    dD = nu * (beta0 + (betaD * k ** h / (k ** h + R ** h)) - D)
     dR = betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
 
     return np.concatenate((dD, dR))
@@ -67,7 +59,6 @@ def defaultparams():
         'sigma': 0.2,
         'P': 10,
         'Q': 10,
-        'k': 1,
         'g': 1,
         'beta0': 0.1
     }
@@ -93,6 +84,36 @@ def getIC(params, n):
     R0 = np.zeros(n)
 
     return np.concatenate((D0, R0))
+
+
+def plotHexagon(p0, q0, c, ax):
+    s32 = np.sqrt(3) / 4
+    q = q0 * 3 / 4
+    p = p0 * 2 * s32
+
+    if q0 % 2 == 0:
+        p += s32
+
+    x = [q - .5, q - .25, q + .25, q + .5, q + .25, q - .25]
+    y = [p, p + s32, p + s32, p, p - s32, p - s32]
+
+    polygon = patches.Polygon(np.c_[x, y], closed=True, edgecolor='black', facecolor=c)
+    ax.add_patch(polygon)
+
+
+def plot_final_lattice(tout, yout, P, Q, n, mean_k):
+    fig, ax = plt.subplots()
+    Cmax = np.max(yout[-1, :n])
+    tind = -1  # last time point
+    for i in range(1, P + 1):
+        for j in range(1, Q + 1):
+            ind = pq2ind(i, j, P)
+            mycolor = min([yout[tind, ind] / Cmax, 1])
+            plotHexagon(i, j, [1 - mycolor, 1 - mycolor, 1], ax)
+    ax.axis('equal')
+    ax.axis('off')
+    plt.title(f'k = {mean_k}')
+    plt.show()
 
 
 def findneighborhex(ind, P, Q):
@@ -130,36 +151,8 @@ def ind2pq(ind, P):
     return p, q
 
 
-def plotHexagon(p0, q0, c, ax):
-    s32 = np.sqrt(3) / 4
-    q = q0 * 3 / 4
-    p = p0 * 2 * s32
-
-    if q0 % 2 == 0:
-        p += s32
-
-    x = [q - .5, q - .25, q + .25, q + .5, q + .25, q - .25]
-    y = [p, p + s32, p + s32, p, p - s32, p - s32]
-
-    polygon = patches.Polygon(np.c_[x, y], closed=True, edgecolor='black', facecolor=c)
-    ax.add_patch(polygon)
-
-
-def plot_final_lattice(tout, yout, P, Q, n, k_mean):
-    fig, ax = plt.subplots()
-    Cmax = np.max(yout[-1, :n])
-    tind = -1  # last time point
-    for i in range(1, P + 1):
-        for j in range(1, Q + 1):
-            ind = pq2ind(i, j, P)
-            mycolor = min([yout[tind, ind] / Cmax, 1])
-            plotHexagon(i, j, [1 - mycolor, 1 - mycolor, 1], ax)
-    ax.axis('equal')
-    ax.axis('off')
-    ax.set_title(f'k mean = {k_mean:.2f}')
-    plt.show()
-
-
 if __name__ == "__main__":
-    k_mean_values = np.linspace(0.01, 3, 10)  # Example range for k means
-    yout, tout, params = multicell_LI(k_mean_values=k_mean_values)
+    means = np.logspace(np.log(0.0025), np.log(10), 10)
+    for mean_k in means:
+        print(f"Running simulation with mean k = {mean_k}")
+        yout, tout, params = multicell_LI(mean_k=mean_k)
