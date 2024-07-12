@@ -152,7 +152,7 @@ def ind2pq(ind, P):
 
 
 if __name__ == "__main__":
-    means = np.logspace(np.log(0.0025), np.log(10), 10)
+    means = np.linspace(0.5, 1, 5)
     for mean_k in means:
         print(f"Running simulation with mean k = {mean_k}")
         yout, tout, params = multicell_LI(mean_k=mean_k)
