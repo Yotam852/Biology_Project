@@ -43,8 +43,8 @@ def li(y, t, params):
     R = y[n:2 * n]
     Dneighbor = np.dot(M, y[:n])
 
-    dD = nu * (beta0 + (betaD * f ** h / (f ** h + R ** h)) - D)
-    dR = betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
+    dD = nu * ((betaD * f ** h / (f ** h + R ** h)) - D)
+    dR = beta0 + betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
 
     return np.concatenate((dD, dR))
 
@@ -207,7 +207,7 @@ def run_simulations():
                     pattern_start_beta0 = beta0
                 pattern_end_beta0 = beta0
 
-            print(f"beta0: {beta0}, k: {k_value}, D_max: {D_max}, D_min: {D_min}, ratio: {ratio}")
+            # print(f"beta0: {beta0}, k: {k_value}, D_max: {D_max}, D_min: {D_min}, ratio: {ratio}")
 
     # Plotting D_max/D_min as a function of k
     plt.figure()

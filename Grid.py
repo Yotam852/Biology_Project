@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import scienceplots
 
-def multicell_LI(params=None, mean_k=1.0):
+
+def multicell_LI(params=None):
     Tmax = 30
     tspan = np.linspace(0, Tmax, 500)
 
@@ -16,13 +17,14 @@ def multicell_LI(params=None, mean_k=1.0):
     n = P * Q
 
     params['connectivity'] = getconnectivityM(P, Q)
-    params['k'] = np.random.normal(mean_k, 0.25*mean_k, n)
 
     y0 = getIC(params, n)
 
     yout = odeint(li, y0, tspan, args=(params,))
 
-    plot_final_lattice(tspan, yout, P, Q, n, mean_k)
+    plot2cells(tspan, yout, n)
+
+    plot_final_lattice(tspan, yout, P, Q, n)
 
     return yout, tspan, params
 
@@ -33,18 +35,18 @@ def li(y, t, params):
     betaR = params['betaR']
     h = params['h']
     m = params['m']
+    k = params['k']
     g = params['g']
     beta0 = params['beta0']
     M = params['connectivity']
-    k = params['k']
     n = len(M)
 
     D = y[:n]
     R = y[n:2 * n]
     Dneighbor = np.dot(M, y[:n])
 
-    dD = nu * ((betaD * k ** h / (k ** h + R ** h)) - D)
-    dR = beta0 + betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
+    dD = nu * (beta0 + (betaD * k ** h / (k ** h + R ** h)) - D)
+    dR = betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
 
     return np.concatenate((dD, dR))
 
@@ -59,8 +61,9 @@ def defaultparams():
         'sigma': 0.2,
         'P': 10,
         'Q': 10,
+        'k': 1,
         'g': 1,
-        'beta0': 0.4
+        'beta0': 0.1
     }
 
 
@@ -86,45 +89,17 @@ def getIC(params, n):
     return np.concatenate((D0, R0))
 
 
-def plotHexagon(p0, q0, c, ax):
-    s32 = np.sqrt(3) / 4
-    q = q0 * 3 / 4
-    p = p0 * 2 * s32
-
-    if q0 % 2 == 0:
-        p += s32
-
-    x = [q - .5, q - .25, q + .25, q + .5, q + .25, q - .25]
-    y = [p, p + s32, p + s32, p, p - s32, p - s32]
-
-    polygon = patches.Polygon(np.c_[x, y], closed=True, edgecolor='black', facecolor=c)
-    ax.add_patch(polygon)
-
-
-def plot_final_lattice(tout, yout, P, Q, n, mean_k):
-    fig, ax = plt.subplots()
-    Cmax = np.max(yout[-1, :n])
-    tind = -1  # last time point
-
-    # Use a color map (e.g., 'viridis') to map D values to colors
-    cmap = plt.get_cmap('viridis')
-
-    for i in range(1, P + 1):
-        for j in range(1, Q + 1):
-            ind = pq2ind(i, j, P)
-            mycolor = min([yout[tind, ind] / Cmax, 1])
-            color = cmap(mycolor)  # Get color from the colormap
-            plotHexagon(i, j, color, ax)
-
-    # Add a colorbar
-    sm = plt.cm.ScalarMappable(cmap=cmap)
-    sm.set_array(yout[tind, :n])
-    cbar = plt.colorbar(sm, ax=ax)
-    cbar.set_label('D values')
-
-    ax.axis('equal')
-    ax.axis('off')
-    plt.title(f'k = {mean_k}')
+def plot2cells(tout, yout, n):
+    plt.figure()
+    plt.style.use(['science', 'notebook', 'grid'])
+    for i in range(2):
+        plt.subplot(1, 2, i + 1)
+        plt.plot(tout, yout[:, i], '-r', linewidth=2)
+        plt.plot(tout, yout[:, n + i], '-b', linewidth=2)
+        plt.title(f'cell #{i + 1}')
+        plt.xlabel('t [a.u]')
+        plt.ylabel('concentration [a.u]')
+        plt.legend(['d', 'r'])
     plt.show()
 
 
@@ -163,18 +138,46 @@ def ind2pq(ind, P):
     return p, q
 
 
+def plotHexagon(p0, q0, c, ax):
+    s32 = np.sqrt(3) / 4
+    q = q0 * 3 / 4
+    p = p0 * 2 * s32
+
+    if q0 % 2 == 0:
+        p += s32
+
+    x = [q - .5, q - .25, q + .25, q + .5, q + .25, q - .25]
+    y = [p, p + s32, p + s32, p, p - s32, p - s32]
+
+    polygon = patches.Polygon(np.c_[x, y], closed=True, edgecolor='black', facecolor=c)
+    ax.add_patch(polygon)
+
+
+def plot_final_lattice(tout, yout, P, Q, n):
+    fig, ax = plt.subplots()
+    Cmax = np.max(yout[-1, :n])
+    tind = -1  # last time point
+
+    # Use a color map (e.g., 'viridis') to map D values to colors
+    cmap = plt.get_cmap('viridis')
+
+    for i in range(1, P + 1):
+        for j in range(1, Q + 1):
+            ind = pq2ind(i, j, P)
+            mycolor = min([yout[tind, ind] / Cmax, 1])
+            color = cmap(mycolor)  # Get color from the colormap
+            plotHexagon(i, j, color, ax)
+
+    # Add a colorbar
+    sm = plt.cm.ScalarMappable(cmap=cmap)
+    sm.set_array(yout[tind, :n])
+    cbar = plt.colorbar(sm, ax=ax)
+    cbar.set_label('D values')
+
+    ax.axis('equal')
+    ax.axis('off')
+    plt.show()
+
+
 if __name__ == "__main__":
-    # Normal Run:
-
-    # yout, tout, params = multicell_LI()
-
-    # Multiple Runs:
-
-    low_means = np.linspace(0.01, 1, 10)
-    for mean_k in low_means:
-        print(f"Running simulation with mean k = {mean_k}")
-        yout, tout, params = multicell_LI(mean_k=mean_k)
-    high_means = np.linspace(1, 10, 10)
-    for mean_k in high_means:
-        print(f"Running simulation with mean k = {mean_k}")
-        yout, tout, params = multicell_LI(mean_k=mean_k)
+    yout, tout, params = multicell_LI()
