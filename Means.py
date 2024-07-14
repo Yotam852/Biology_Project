@@ -112,7 +112,7 @@ def plot_final_lattice(tout, yout, P, Q, n, mean_k):
     for i in range(1, P + 1):
         for j in range(1, Q + 1):
             ind = pq2ind(i, j, P)
-            mycolor = min([yout[tind, ind] / Cmax, 1])
+            mycolor = min([yout[tind, ind] / 10, 1])  # Set a fixed color range between 0 and 10
             color = cmap(mycolor)  # Get color from the colormap
             plotHexagon(i, j, color, ax)
 
