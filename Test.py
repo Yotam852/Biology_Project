@@ -164,17 +164,11 @@ def ind2pq(ind, P):
 
 
 if __name__ == "__main__":
-    # Normal Run:
-
-    # yout, tout, params = multicell_LI()
-
-    # Multiple Runs:
-
     low_means = np.linspace(0.01, 1, 10)
     for mean_k in low_means:
-        print(f"Running simulation with mean k = {mean_k}")
+        # print(f"Running simulation with mean k = {mean_k}")
         yout, tout, params = multicell_LI(mean_k=mean_k)
     high_means = np.linspace(1, 10, 10)
     for mean_k in high_means:
-        print(f"Running simulation with mean k = {mean_k}")
+        # print(f"Running simulation with mean k = {mean_k}")
         yout, tout, params = multicell_LI(mean_k=mean_k)

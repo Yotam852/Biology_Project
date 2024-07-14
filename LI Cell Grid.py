@@ -157,11 +157,23 @@ def plot_final_lattice(tout, yout, P, Q, n):
     fig, ax = plt.subplots()
     Cmax = np.max(yout[-1, :n])
     tind = -1  # last time point
+
+    # Use a color map (e.g., 'viridis') to map D values to colors
+    cmap = plt.get_cmap('viridis')
+
     for i in range(1, P + 1):
         for j in range(1, Q + 1):
             ind = pq2ind(i, j, P)
             mycolor = min([yout[tind, ind] / Cmax, 1])
-            plotHexagon(i, j, [1 - mycolor, 1 - mycolor, 1], ax)
+            color = cmap(mycolor)  # Get color from the colormap
+            plotHexagon(i, j, color, ax)
+
+    # Add a colorbar
+    sm = plt.cm.ScalarMappable(cmap=cmap)
+    sm.set_array(yout[tind, :n])
+    cbar = plt.colorbar(sm, ax=ax)
+    cbar.set_label('D values')
+
     ax.axis('equal')
     ax.axis('off')
     plt.show()
