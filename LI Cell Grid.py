@@ -99,7 +99,7 @@ def plot2cells(tout, yout, n):
         plt.title(f'cell #{i + 1}')
         plt.xlabel('t [a.u]')
         plt.ylabel('concentration [a.u]')
-        plt.legend(['d', 'r'])
+        plt.legend(['D', 'R'])
     plt.show()
 
 

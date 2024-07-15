@@ -57,6 +57,6 @@ ax[1].legend(['R1', 'R2'], loc='best')
 
 fig.text(0.5, 0.04, 'time [a.u]', ha='center')
 fig.text(0.04, 0.5, 'concentration [a.u]', va='center', rotation='vertical')
-fig.suptitle('Lateral Inhibition Model for 2 Cells')
+# fig.suptitle('Lateral Inhibition Model for 2 Cells')
 
 plt.show()
