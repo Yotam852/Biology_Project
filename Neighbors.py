@@ -54,8 +54,8 @@ def li(y, t, params):
     R = y[n:2 * n]
     Dneighbor = np.dot(M, y[:n])
 
-    dD = nu * (beta0 + (betaD * k_values ** h / (k_values ** h + R ** h)) - D)
-    dR = betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
+    dD = nu * ((betaD * k_values ** h / (k_values ** h + R ** h)) - D)
+    dR = beta0 + betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
 
     return np.concatenate((dD, dR))
 
@@ -70,7 +70,7 @@ def defaultparams():
         'sigma': 0.2,
         'P': 10,
         'Q': 10,
-        'k_mean': 1,  # Mean of k distribution
+        'k_mean': 0.1,  # Mean of k distribution
         'k_std': 0.1,  # Standard deviation of k distribution
         'g': 1,
         'beta0': 0.1

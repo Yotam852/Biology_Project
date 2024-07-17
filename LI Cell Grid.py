@@ -45,8 +45,8 @@ def li(y, t, params):
     R = y[n:2 * n]
     Dneighbor = np.dot(M, y[:n])
 
-    dD = nu * (beta0 + (betaD * k ** h / (k ** h + R ** h)) - D)
-    dR = betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
+    dD = nu * ((betaD * k ** h / (k ** h + R ** h)) - D)
+    dR = beta0 + betaR * Dneighbor ** m / (g ** m + Dneighbor ** m) - R
 
     return np.concatenate((dD, dR))
 
