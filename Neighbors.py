@@ -31,6 +31,10 @@ def multicell_LI(params=None):
     neighbors_df = analyze_neighbors(yout[-1, :n], params, P, Q)
     print(neighbors_df)
 
+    # Export the DataFrame to a CSV file
+    neighbors_df.to_csv('neighbors_analysis.csv', index=False)
+    print('DataFrame exported to neighbors_analysis.csv')
+
     return yout, tspan, params, neighbors_df
 
 
