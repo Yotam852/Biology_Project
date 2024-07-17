@@ -101,18 +101,18 @@ def getIC(params, n):
     return np.concatenate((D0, R0)), k_values
 
 
-# def plot2cells(tout, yout, n):
-#     plt.figure()
-#     plt.style.use(['science', 'notebook', 'grid'])
-#     for i in range(2):
-#         plt.subplot(1, 2, i + 1)
-#         plt.plot(tout, yout[:, i], '-r', linewidth=2)
-#         plt.plot(tout, yout[:, n + i], '-b', linewidth=2)
-#         plt.title(f'cell #{i + 1}')
-#         plt.xlabel('t [a.u]')
-#         plt.ylabel('concentration [a.u]')
-#         plt.legend(['D', 'R'])
-#     plt.show()
+def plot2cells(tout, yout, n):
+    plt.figure()
+    plt.style.use(['science', 'notebook', 'grid'])
+    for i in range(2):
+        plt.subplot(1, 2, i + 1)
+        plt.plot(tout, yout[:, i], '-r', linewidth=2)
+        plt.plot(tout, yout[:, n + i], '-b', linewidth=2)
+        plt.title(f'cell #{i + 1}')
+        plt.xlabel('t [a.u]')
+        plt.ylabel('concentration [a.u]')
+        plt.legend(['D', 'R'])
+    plt.show()
 
 
 def findneighborhex(ind, P, Q):
