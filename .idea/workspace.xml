@@ -5,8 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="Wrote analysis in Neighbors.py">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LI Cell Grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/LI Cell Grid.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Neighbors.py" beforeDir="false" afterPath="$PROJECT_DIR$/Neighbors.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/neighbors_analysis.csv" beforeDir="false" afterPath="$PROJECT_DIR$/neighbors_analysis.csv" afterDir="false" />
     </list>
@@ -141,15 +139,7 @@
       <workItem from="1720421409327" duration="1017000" />
       <workItem from="1720535155025" duration="1943000" />
       <workItem from="1720709939229" duration="3867000" />
-      <workItem from="1721191764919" duration="8096000" />
-    </task>
-    <task id="LOCAL-00013" summary="coding the Stability Analysis and the cell grid">
-      <option name="closed" value="true" />
-      <created>1714563323225</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1714563323225</updated>
+      <workItem from="1721191764919" duration="10246000" />
     </task>
     <task id="LOCAL-00014" summary="coding the Stability Analysis and the cell grid">
       <option name="closed" value="true" />
@@ -535,7 +525,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721200139283</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Wrote analysis in Neighbors.py">
+      <option name="closed" value="true" />
+      <created>1721239117978</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1721239117978</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -578,11 +576,11 @@
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$model_factory.coverage" NAME="model_factory Coverage Results" MODIFIED="1715254120681" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Test_2.coverage" NAME="Test 2 Coverage Results" MODIFIED="1719736248180" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Model.coverage" NAME="Model Coverage Results" MODIFIED="1721059278164" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Neighbors.coverage" NAME="Neighbors Coverage Results" MODIFIED="1721228184521" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Neighbors.coverage" NAME="Neighbors Coverage Results" MODIFIED="1721239219394" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Means.coverage" NAME="Means Coverage Results" MODIFIED="1721192004276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Stability_Analysis.coverage" NAME="Stability Analysis Coverage Results" MODIFIED="1714395369678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$test.coverage" NAME="test Coverage Results" MODIFIED="1714552488478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Test.coverage" NAME="Test Coverage Results" MODIFIED="1721213504864" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$Test.coverage" NAME="Test Coverage Results" MODIFIED="1721239086798" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$hexagons.coverage" NAME="hexagons Coverage Results" MODIFIED="1717070710344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_2_Cells.coverage" NAME="LI 2 Cells Coverage Results" MODIFIED="1721059772255" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_Cell_Grid.coverage" NAME="LI Cell Grid Coverage Results" MODIFIED="1721059797597" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

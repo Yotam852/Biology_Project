@@ -70,10 +70,10 @@ def defaultparams():
         'sigma': 0.2,
         'P': 10,
         'Q': 10,
-        'k_mean': 0.1,  # Mean of k distribution
+        'k_mean': 1,  # Mean of k distribution
         'k_std': 0.1,  # Standard deviation of k distribution
         'g': 1,
-        'beta0': 0.1
+        'beta0': 0.4
     }
 
 
