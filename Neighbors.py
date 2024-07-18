@@ -71,7 +71,7 @@ def defaultparams():
         'P': 10,
         'Q': 10,
         'k_mean': 1,  # Mean of k distribution
-        'k_std': 0.1,  # Standard deviation of k distribution
+        'k_std': 1,  # Standard deviation of k distribution
         'g': 1,
         'beta0': 0.4
     }
@@ -96,22 +96,23 @@ def getIC(params, n):
     D0 = epsilon * params['betaD'] * (1 + params['sigma'] * U)
     R0 = np.zeros(n)
 
-    k_values = np.random.normal(params['k_mean'], params['k_std'], n)  # Generate k values
+    k_values = np.random.lognormal(params['k_mean'], params['k_std'], n)  # Generate k values
 
     return np.concatenate((D0, R0)), k_values
 
 
 def plot2cells(tout, yout, n):
-    plt.figure()
+    # plt.figure()
     plt.style.use(['science', 'notebook', 'grid'])
-    for i in range(2):
-        plt.subplot(1, 2, i + 1)
-        plt.plot(tout, yout[:, i], '-r', linewidth=2)
-        plt.plot(tout, yout[:, n + i], '-b', linewidth=2)
-        plt.title(f'cell #{i + 1}')
-        plt.xlabel('t [a.u]')
-        plt.ylabel('concentration [a.u]')
-        plt.legend(['D', 'R'])
+    fig, ax = plt.subplots(1, 2, sharex=True, figsize=(8, 6))
+    ax[0].plot(tout, yout[:, :n])
+    ax[0].title.set_text('D Values vs Time')
+    ax[0].axhline(y=np.mean(yout[:, :n]), linestyle='--', color='black')
+    ax[1].plot(tout, yout[:, n:])
+    ax[1].title.set_text('R Values vs Time')
+    ax[1].axhline(y=np.mean(yout[:, n:]), linestyle='--', color='black')
+    fig.text(0.5, 0.04, 'time [a.u]', ha='center')
+    fig.text(0.04, 0.5, 'concentration [a.u]', va='center', rotation='vertical')
     plt.show()
 
 
