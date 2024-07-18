@@ -16,7 +16,7 @@ def multicell_LI(params=None, mean_k=1.0):
     n = P * Q
 
     params['connectivity'] = getconnectivityM(P, Q)
-    params['k'] = np.random.lognormal(mean_k, 0.2, n)
+    params['k'] = np.random.lognormal(mean_k, 0.5, n)
 
     y0 = getIC(params, n)
 
@@ -124,7 +124,7 @@ def plot_final_lattice(tout, yout, P, Q, n, mean_k):
 
     ax.axis('equal')
     ax.axis('off')
-    plt.title(f'k = {mean_k}')
+    plt.title(f'log(k) = {mean_k}')
     plt.show()
 
 
@@ -164,7 +164,7 @@ def ind2pq(ind, P):
 
 
 if __name__ == "__main__":
-    low_means = [0.1, 0.5, 0.75, 1, 5]
+    low_means = np.linspace(-2, 2, 5)
     for mean_k in low_means:
         # print(f"Running simulation with mean k = {mean_k}")
         yout, tout, params = multicell_LI(mean_k=mean_k)
