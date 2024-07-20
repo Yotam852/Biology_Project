@@ -124,7 +124,7 @@ def plot_final_lattice(tout, yout, P, Q, n, mean_k):
 
     ax.axis('equal')
     ax.axis('off')
-    plt.title(f'log(k) = {mean_k}')
+    plt.title(f'log(<k>) = {mean_k}')
     plt.show()
 
 
