@@ -1,3 +1,5 @@
+# A code that runs LI on a cells grid + plots a grid with the k value for each cell + scatter plot of D(k)
+
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
@@ -234,6 +236,7 @@ def plot_k_lattice(k_values, P, Q):
 
     ax.axis('equal')
     ax.axis('off')
+    plt.title('k value of each cell')
     plt.show()
 
 
