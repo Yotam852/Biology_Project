@@ -1,3 +1,5 @@
+# A code that is checking patterning ranges for k and beta_0
+
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt

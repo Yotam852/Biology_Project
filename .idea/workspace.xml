@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="Wrote analysis in Neighbors.py">
+      <change beforePath="$PROJECT_DIR$/.idea/Biology Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Biology Project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_13_2024_11_22_AM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_15_2024_6_49_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_15_2024_6_49_PM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Means.py" beforeDir="false" afterPath="$PROJECT_DIR$/Means.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighbors_analysis.csv" beforeDir="false" afterPath="$PROJECT_DIR$/neighbors_analysis.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,6 +144,7 @@
       <workItem from="1720709939229" duration="3867000" />
       <workItem from="1721191764919" duration="10246000" />
       <workItem from="1721320476833" duration="10092000" />
+      <workItem from="1721545838969" duration="915000" />
     </task>
     <task id="LOCAL-00019" summary="added shahar's code">
       <option name="closed" value="true" />

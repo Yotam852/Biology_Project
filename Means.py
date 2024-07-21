@@ -1,3 +1,5 @@
+# A code that executes LI for a cell grid for multiple <k> values where k is drawn for each cell from a log-normal distribuition
+
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt

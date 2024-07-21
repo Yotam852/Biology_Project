@@ -1,3 +1,5 @@
+# A code the simulates classic LI on 2 cells
+
 import numpy as np
 import matplotlib.pyplot as plt
 import scienceplots

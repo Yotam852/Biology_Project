@@ -1,3 +1,5 @@
+# A code that is conducting neighbor analysis for a grid of cells where k for each cell is drawn from a log-normal distribution
+
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
