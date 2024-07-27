@@ -7,6 +7,7 @@ import matplotlib.patches as patches
 import pandas as pd
 import scienceplots
 
+
 def multicell_LI(mean_k):
     Tmax = 30
     tspan = np.linspace(0, Tmax, 500)

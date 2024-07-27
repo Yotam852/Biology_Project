@@ -4,18 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="Wrote analysis in Neighbors.py">
+    <list default="true" id="a93218f0-ee9f-41de-8399-0b8a62b5de3c" name="Changes" comment="Added bar plot in k_grid_scatter_bar.py">
       <change beforePath="$PROJECT_DIR$/.idea/Biology Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Biology Project.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_15_2024_6_49_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_15_2024_6_49_PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_25_2024_1_22_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_25_2024_1_22_PM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Means_Analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Means_Analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/neighbors_analysis.csv" beforeDir="false" afterPath="$PROJECT_DIR$/neighbors_analysis.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighbors_analysis_mean_k_-1.0.csv" beforeDir="false" afterPath="$PROJECT_DIR$/neighbors_analysis_mean_k_-1.0.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighbors_analysis_mean_k_-2.0.csv" beforeDir="false" afterPath="$PROJECT_DIR$/neighbors_analysis_mean_k_-2.0.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighbors_analysis_mean_k_0.0.csv" beforeDir="false" afterPath="$PROJECT_DIR$/neighbors_analysis_mean_k_0.0.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighbors_analysis_mean_k_1.0.csv" beforeDir="false" afterPath="$PROJECT_DIR$/neighbors_analysis_mean_k_1.0.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/neighbors_analysis_mean_k_2.0.csv" beforeDir="false" afterPath="$PROJECT_DIR$/neighbors_analysis_mean_k_2.0.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,34 +55,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Python.LI 2 Cells.executor": "Run",
-    "Python.LI Cell Grid.executor": "Run",
-    "Python.Means.executor": "Run",
-    "Python.Means_Analysis.executor": "Run",
-    "Python.Model.executor": "Run",
-    "Python.Neighbors.executor": "Run",
-    "Python.Stability Analysis.executor": "Run",
-    "Python.Test.executor": "Run",
-    "Python.hexagons.executor": "Run",
-    "Python.k_Grid_Scatter.executor": "Run",
-    "Python.model_factory.executor": "Run",
-    "Python.simple 2D ODE params.executor": "Run",
-    "Python.test.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/USER/Desktop/Biology Project",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Python.LI 2 Cells.executor&quot;: &quot;Run&quot;,
+    &quot;Python.LI Cell Grid.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Means.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Means_Analysis.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Model.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Neighbors.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Stability Analysis.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.hexagons.executor&quot;: &quot;Run&quot;,
+    &quot;Python.k_Grid_Scatter.executor&quot;: &quot;Run&quot;,
+    &quot;Python.k_grid_scatter_bar.executor&quot;: &quot;Run&quot;,
+    &quot;Python.model_factory.executor&quot;: &quot;Run&quot;,
+    &quot;Python.simple 2D ODE params.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/USER/Desktop/Biology Project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\yotam\Desktop\Biology Project\Biology Project" />
@@ -152,14 +149,9 @@
       <workItem from="1720709939229" duration="3867000" />
       <workItem from="1721191764919" duration="10246000" />
       <workItem from="1721320476833" duration="10092000" />
-    </task>
-    <task id="LOCAL-00019" summary="added shahar's code">
-      <option name="closed" value="true" />
-      <created>1714979457385</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1714979457385</updated>
+      <workItem from="1721998880268" duration="90000" />
+      <workItem from="1722086987761" duration="1100000" />
+      <workItem from="1722088631583" duration="889000" />
     </task>
     <task id="LOCAL-00020" summary="added shahar's code">
       <option name="closed" value="true" />
@@ -545,7 +537,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721326371064</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="Added bar plot in k_grid_scatter_bar.py">
+      <option name="closed" value="true" />
+      <created>1721990457152</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1721990457153</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -582,7 +582,8 @@
     <MESSAGE value="working on different mean values of k in Test.py" />
     <MESSAGE value="everything is working for now" />
     <MESSAGE value="Wrote analysis in Neighbors.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Wrote analysis in Neighbors.py" />
+    <MESSAGE value="Added bar plot in k_grid_scatter_bar.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added bar plot in k_grid_scatter_bar.py" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$model_factory.coverage" NAME="model_factory Coverage Results" MODIFIED="1715254120681" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -597,6 +598,7 @@
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Stability_Analysis.coverage" NAME="Stability Analysis Coverage Results" MODIFIED="1714395369678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$test.coverage" NAME="test Coverage Results" MODIFIED="1714552488478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$Test.coverage" NAME="Test Coverage Results" MODIFIED="1721239086798" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LI_2_Cells_py$k_grid_scatter_bar.coverage" NAME="k_grid_scatter_bar Coverage Results" MODIFIED="1722087006974" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LI_2_Cells_py$LI_2_Cells.coverage" NAME="LI 2 Cells Coverage Results" MODIFIED="1721059772255" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -257,19 +257,31 @@ def plot_neighbor_distribution(neighbors_df):
     high_D_cells = neighbors_df[neighbors_df['cell_type'] == 'high_D']
     low_D_cells = neighbors_df[neighbors_df['cell_type'] == 'low_D']
 
+    max_neighbors = 6  # Maximum number of neighbors for a hexagonal grid
+
+    # Count occurrences for high and low D neighbors
+    high_D_neighbor_counts = high_D_cells['high_D_neighbors'].value_counts().reindex(range(max_neighbors + 1), fill_value=0)
+    low_D_neighbor_counts = high_D_cells['low_D_neighbors'].value_counts().reindex(range(max_neighbors + 1), fill_value=0)
+
+    high_D_neighbor_counts_low = low_D_cells['high_D_neighbors'].value_counts().reindex(range(max_neighbors + 1), fill_value=0)
+    low_D_neighbor_counts_low = low_D_cells['low_D_neighbors'].value_counts().reindex(range(max_neighbors + 1), fill_value=0)
+
+    x = np.arange(max_neighbors + 1)  # X-axis labels for 0 to max_neighbors
+    width = 0.35  # Width of the bars
+
     fig, ax = plt.subplots(2, 1, figsize=(10, 12))
 
     # Plot for high D cells
-    ax[0].bar(range(7), high_D_cells['high_D_neighbors'].value_counts(sort=False).reindex(range(7), fill_value=0), label='High D Neighbors')
-    ax[0].bar(range(7), high_D_cells['low_D_neighbors'].value_counts(sort=False).reindex(range(7), fill_value=0), bottom=high_D_cells['high_D_neighbors'].value_counts(sort=False).reindex(range(7), fill_value=0), label='Low D Neighbors')
+    ax[0].bar(x - width/2, high_D_neighbor_counts, width, label='High D Neighbors')
+    ax[0].bar(x + width/2, low_D_neighbor_counts, width, label='Low D Neighbors')
     ax[0].set_title('High D Cells Neighbor Distribution')
     ax[0].set_xlabel('Number of Neighbors')
     ax[0].set_ylabel('Number of Cells')
     ax[0].legend()
 
     # Plot for low D cells
-    ax[1].bar(range(7), low_D_cells['high_D_neighbors'].value_counts(sort=False).reindex(range(7), fill_value=0), label='High D Neighbors')
-    ax[1].bar(range(7), low_D_cells['low_D_neighbors'].value_counts(sort=False).reindex(range(7), fill_value=0), bottom=low_D_cells['high_D_neighbors'].value_counts(sort=False).reindex(range(7), fill_value=0), label='Low D Neighbors')
+    ax[1].bar(x - width/2, high_D_neighbor_counts_low, width, label='High D Neighbors')
+    ax[1].bar(x + width/2, low_D_neighbor_counts_low, width, label='Low D Neighbors')
     ax[1].set_title('Low D Cells Neighbor Distribution')
     ax[1].set_xlabel('Number of Neighbors')
     ax[1].set_ylabel('Number of Cells')
@@ -277,6 +289,7 @@ def plot_neighbor_distribution(neighbors_df):
 
     plt.tight_layout()
     plt.show()
+
 
 
 if __name__ == "__main__":
