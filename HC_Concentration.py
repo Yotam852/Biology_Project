@@ -1,5 +1,3 @@
-# A code that runs LI on a cells grid + plots a grid with the k value for each cell + scatter plot of D(k) + a bar plot that visualizes the neighbor analysis
-
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
@@ -22,13 +20,16 @@ def multicell_LI(params=None):
     params['connectivity'] = getconnectivityM(P, Q)
 
     y0, k_values = getIC(params, n)
-    params['k_values'] = k_values  # Store k_values in params
+    params['k_values'] = k_values  # Store initial k_values in params
+
+    k_slope = params['k_slope']  # Define the rate at which k values change over time
+    params['k_slope'] = k_slope
 
     yout = odeint(li, y0, tspan, args=(params,))
 
-    plot2cells(tspan, yout, n)
+    # plot2cells(tspan, yout, n)
 
-    plot_final_lattice(tspan, yout, P, Q, n)
+    # plot_final_lattice(tspan, yout, P, Q, n)
 
     neighbors_df = analyze_neighbors(yout[-1, :n], params, P, Q)
     print(neighbors_df)
@@ -38,13 +39,16 @@ def multicell_LI(params=None):
     print('DataFrame exported to neighbors_analysis.csv')
 
     # Plot lattice with k values
-    plot_k_lattice(params['k_values'], P, Q)
+    # plot_k_lattice(params['k_values'], P, Q)
 
     # Plot scatter of D values vs k values
-    plot_D_vs_k(yout[-1, :n], k_values)
+    # plot_D_vs_k(yout[-1, :n], k_values)
 
     # Plot neighbor distributions
-    plot_neighbor_distribution(neighbors_df)
+    # plot_neighbor_distribution(neighbors_df)
+
+    # Plot high D cell concentration over time within a specified radius
+    plot_high_D_concentration(tspan, yout, P, Q, radius=3, center_p=5, center_q=5)
 
     return yout, tspan, params, neighbors_df
 
@@ -58,7 +62,7 @@ def li(y, t, params):
     g = params['g']
     beta0 = params['beta0']
     M = params['connectivity']
-    k_values = params['k_values']  # Retrieve k_values
+    k_values = params['k_values'] + params['k_slope'] * t  # Advance k values linearly with time
     n = len(M)
 
     D = y[:n]
@@ -81,10 +85,11 @@ def defaultparams():
         'sigma': 0.2,
         'P': 10,
         'Q': 10,
-        'k_mean': 0,  # Mean of k distribution
+        'k_mean': -2,  # Mean of k distribution
         'k_std': 0.1,  # Standard deviation of k distribution
         'g': 1,
-        'beta0': 0.4
+        'beta0': 0.4,
+        'k_slope': 0.25  # Slope of k values change over time
     }
 
 
@@ -220,7 +225,8 @@ def analyze_neighbors(D_values, params, P, Q):
         neighbor_types['low_D_neighbors'].append(low_D_count)
         neighbor_types['cell_type'].append(cell_type)
 
-    return pd.DataFrame(neighbor_types)
+    df = pd.DataFrame(neighbor_types)
+    return df
 
 
 def plot_k_lattice(k_values, P, Q):
@@ -228,68 +234,66 @@ def plot_k_lattice(k_values, P, Q):
     for i in range(1, P + 1):
         for j in range(1, Q + 1):
             ind = pq2ind(i, j, P)
-            plotHexagon(i, j, 'white', ax)  # Plot hexagon with white color
-            p, q = ind2pq(ind, P)
-            s32 = np.sqrt(3) / 4
-            x = q * 3 / 4
-            y = p * 2 * s32
-            if q % 2 == 0:
-                y += s32
-            ax.text(x, y, f'{k_values[ind]:.2f}', ha='center', va='center', fontsize=8)
+            ax.text(j, i, f'{k_values[ind]:.2f}', ha='center', va='center')
 
-    ax.axis('equal')
-    ax.axis('off')
-    plt.title('k value of each cell')
+    ax.set_xticks(range(1, Q + 1))
+    ax.set_yticks(range(1, P + 1))
+    ax.set_xticklabels(range(1, Q + 1))
+    ax.set_yticklabels(range(1, P + 1))
+    ax.set_xlim(0.5, Q + 0.5)
+    ax.set_ylim(0.5, P + 0.5)
+    ax.set_aspect('equal')
     plt.show()
 
 
 def plot_D_vs_k(D_values, k_values):
-    plt.style.use(['science', 'notebook', 'grid'])
-    plt.figure(figsize=(8, 6))
-    plt.scatter(k_values, D_values, c='blue', alpha=0.5)
+    plt.figure()
+    plt.scatter(k_values, D_values)
     plt.xlabel('k values')
     plt.ylabel('D values')
-    plt.title('Scatter plot of D values vs k values')
+    plt.title('D values vs k values')
     plt.show()
 
 
 def plot_neighbor_distribution(neighbors_df):
-    high_D_cells = neighbors_df[neighbors_df['cell_type'] == 'high_D']
-    low_D_cells = neighbors_df[neighbors_df['cell_type'] == 'low_D']
+    high_D_counts = neighbors_df[neighbors_df['cell_type'] == 'high_D']['high_D_neighbors']
+    low_D_counts = neighbors_df[neighbors_df['cell_type'] == 'low_D']['low_D_neighbors']
 
-    max_neighbors = 6  # Maximum number of neighbors for a hexagonal grid
+    plt.figure()
+    plt.hist(high_D_counts, alpha=0.5, label='High D Cells')
+    plt.hist(low_D_counts, alpha=0.5, label='Low D Cells')
+    plt.xlabel('Number of High D Neighbors')
+    plt.ylabel('Frequency')
+    plt.legend()
+    plt.title('Distribution of High D Neighbors')
+    plt.show()
 
-    # Count occurrences for high and low D neighbors
-    high_D_neighbor_counts = high_D_cells['high_D_neighbors'].value_counts().reindex(range(max_neighbors + 1), fill_value=0)
-    low_D_neighbor_counts = high_D_cells['low_D_neighbors'].value_counts().reindex(range(max_neighbors + 1), fill_value=0)
 
-    high_D_neighbor_counts_low = low_D_cells['high_D_neighbors'].value_counts().reindex(range(max_neighbors + 1), fill_value=0)
-    low_D_neighbor_counts_low = low_D_cells['low_D_neighbors'].value_counts().reindex(range(max_neighbors + 1), fill_value=0)
+def plot_high_D_concentration(tout, yout, P, Q, radius, center_p, center_q):
+    center_ind = pq2ind(center_p, center_q, P)
+    center_x, center_y = ind2pq(center_ind, P)
+    cell_positions = [ind2pq(i, P) for i in range(P * Q)]
 
-    x = np.arange(max_neighbors + 1)  # X-axis labels for 0 to max_neighbors
-    width = 0.35  # Width of the bars
+    distances = np.array([np.sqrt((x - center_x) ** 2 + (y - center_y) ** 2) for x, y in cell_positions])
+    within_radius = distances <= radius
 
-    fig, ax = plt.subplots(2, 1, figsize=(10, 12))
+    high_D_concentration = []
 
-    # Plot for high D cells
-    ax[0].bar(x - width/2, high_D_neighbor_counts, width, label='High D Neighbors')
-    ax[0].bar(x + width/2, low_D_neighbor_counts, width, label='Low D Neighbors')
-    ax[0].set_title('High D Cells Neighbor Distribution')
-    ax[0].set_xlabel('Number of Neighbors')
-    ax[0].set_ylabel('Number of Cells')
-    ax[0].legend()
+    threshold = np.mean(yout[:, :P * Q])
 
-    # Plot for low D cells
-    ax[1].bar(x - width/2, high_D_neighbor_counts_low, width, label='High D Neighbors')
-    ax[1].bar(x + width/2, low_D_neighbor_counts_low, width, label='Low D Neighbors')
-    ax[1].set_title('Low D Cells Neighbor Distribution')
-    ax[1].set_xlabel('Number of Neighbors')
-    ax[1].set_ylabel('Number of Cells')
-    ax[1].legend()
+    for t_index in range(len(tout)):
+        D_values = yout[t_index, :P * Q]
+        high_D_cells = (D_values > threshold)
+        concentration = np.sum(high_D_cells & within_radius) / np.sum(within_radius)
+        high_D_concentration.append(concentration)
 
-    plt.tight_layout()
+    plt.figure()
+    plt.plot(tout, high_D_concentration)
+    plt.xlabel('Time')
+    plt.ylabel('High D Cell Concentration')
+    plt.title(f'High D Cell Concentration within radius {radius} of cell ({center_p},{center_q})')
     plt.show()
 
 
 if __name__ == "__main__":
-    yout, tout, params, neighbors_df = multicell_LI()
+    multicell_LI()
