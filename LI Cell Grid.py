@@ -1,4 +1,6 @@
-# A code the simulates classic LI on a grid of cells
+"""
+This Script
+"""
 
 import numpy as np
 from scipy.integrate import odeint
