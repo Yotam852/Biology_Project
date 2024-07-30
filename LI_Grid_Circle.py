@@ -163,7 +163,7 @@ def plot_final_lattice(tout, yout, P, Q, n, radius):
     cbar = plt.colorbar(sm, ax=ax)
     cbar.set_label('D values')
 
-    # Calculate the center of the hexagon at (p, q) = (5, 5)
+    # Calculate the center of the hexagon
     s32 = np.sqrt(3) / 4
     q_center = 5 * 3 / 4
     p_center = 5 * 2 * s32
