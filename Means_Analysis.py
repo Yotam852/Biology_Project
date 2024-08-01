@@ -162,7 +162,7 @@ def plot_final_lattice(tout, yout, P, Q, n):
     tind = -1  # last time point
 
     # Use a color map (e.g., 'viridis') to map D values to colors
-    cmap = plt.get_cmap('viridis')
+    cmap = plt.get_cmap('Greens_r')
 
     for i in range(1, P + 1):
         for j in range(1, Q + 1):
