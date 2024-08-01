@@ -171,7 +171,7 @@ def plot_final_lattice(tout, yout, P, Q, n, radius):
         p_center += s32
 
     # Plot the circle
-    circle = plt.Circle((q_center, p_center), radius, color='red', fill=False, linestyle='--')
+    circle = plt.Circle((q_center, p_center), radius, color='red', fill=False, linestyle='-', linewidth=3)
     ax.add_patch(circle)
 
     ax.axis('equal')

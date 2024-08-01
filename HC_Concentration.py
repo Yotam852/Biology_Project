@@ -270,6 +270,7 @@ def plot_neighbor_distribution(neighbors_df):
 
 
 def plot_high_D_concentration(tout, yout, P, Q, radius, center_p, center_q):
+    plt.style.use(['science', 'notebook', 'grid'])
     center_ind = pq2ind(center_p, center_q, P)
     center_x, center_y = ind2pq(center_ind, P)
     cell_positions = [ind2pq(i, P) for i in range(P * Q)]
@@ -289,9 +290,9 @@ def plot_high_D_concentration(tout, yout, P, Q, radius, center_p, center_q):
 
     plt.figure()
     plt.plot(tout, high_D_concentration)
-    plt.xlabel('Time')
-    plt.ylabel('High D Cell Concentration')
-    plt.title(f'High D Cell Concentration within radius {radius} of cell ({center_p},{center_q})')
+    plt.xlabel('time [a.u]')
+    plt.ylabel('HC Concentration [a.u]')
+    plt.title(f'HC Concentration within radius {radius} of cell ({center_p},{center_q})')
     plt.show()
 
 
