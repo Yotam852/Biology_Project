@@ -6,7 +6,7 @@ import pandas as pd
 import scienceplots
 
 
-def multicell_LI(params=None, num_runs=10):
+def multicell_LI(params=None, num_runs=100):
     Tmax = 100
     tspan = np.linspace(0, Tmax, 1000)
 
