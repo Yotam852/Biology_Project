@@ -175,11 +175,11 @@ def plot_final_lattice(tout, yout, P, Q, n):
     sm = plt.cm.ScalarMappable(cmap=cmap)
     sm.set_array(yout[tind, :n])
     cbar = plt.colorbar(sm, ax=ax)
-    cbar.set_label('D values')
+    cbar.set_label('Delta levels')
 
     ax.axis('equal')
     ax.axis('off')
-    plt.title(f'log(<k>) = {mean_k}')
+    # plt.title(f'log(<k>) = {mean_k}')
     plt.show()
 
 def analyze_neighbors(D_values, params, P, Q):

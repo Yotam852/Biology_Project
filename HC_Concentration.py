@@ -7,8 +7,8 @@ import scienceplots
 
 
 def multicell_LI(params=None):
-    Tmax = 30
-    tspan = np.linspace(0, Tmax, 500)
+    Tmax = 100
+    tspan = np.linspace(0, Tmax, 1000)
 
     if params is None:
         params = defaultparams()
@@ -27,10 +27,6 @@ def multicell_LI(params=None):
 
     yout = odeint(li, y0, tspan, args=(params,))
 
-    # plot2cells(tspan, yout, n)
-
-    # plot_final_lattice(tspan, yout, P, Q, n)
-
     neighbors_df = analyze_neighbors(yout[-1, :n], params, P, Q)
     print(neighbors_df)
 
@@ -38,17 +34,14 @@ def multicell_LI(params=None):
     neighbors_df.to_csv('neighbors_analysis.csv', index=False)
     print('DataFrame exported to neighbors_analysis.csv')
 
-    # Plot lattice with k values
-    # plot_k_lattice(params['k_values'], P, Q)
+    # Plot high D cell concentration over time across the whole lattice
+    plot_high_D_concentration(tspan, yout, P, Q)
 
-    # Plot scatter of D values vs k values
-    # plot_D_vs_k(yout[-1, :n], k_values)
+    # Plot the amount of low D cells that do NOT neighbor any high D cells as a function of time
+    plot_low_D_no_high_D_neighbors(tspan, yout, P, Q)
 
-    # Plot neighbor distributions
-    # plot_neighbor_distribution(neighbors_df)
-
-    # Plot high D cell concentration over time within a specified radius
-    plot_high_D_concentration(tspan, yout, P, Q, radius=3, center_p=5, center_q=5)
+    # Plot the amount of high D cells that neighbor at least 1 high D cell as a function of time
+    plot_high_D_with_high_D_neighbors(tspan, yout, P, Q)
 
     return yout, tspan, params, neighbors_df
 
@@ -62,7 +55,7 @@ def li(y, t, params):
     g = params['g']
     beta0 = params['beta0']
     M = params['connectivity']
-    k_values = params['k_values'] + params['k_slope'] * t  # Advance k values linearly with time
+    k_values = 10**(params['k_values'] + params['k_slope'] * t)  # Advance k values linearly with time
     n = len(M)
 
     D = y[:n]
@@ -85,11 +78,11 @@ def defaultparams():
         'sigma': 0.2,
         'P': 10,
         'Q': 10,
-        'k_mean': -2,  # Mean of k distribution
-        'k_std': 0.1,  # Standard deviation of k distribution
+        'k_mean': -1,  # Mean of k distribution
+        'k_std': 1,  # Standard deviation of k distribution
         'g': 1,
         'beta0': 0.4,
-        'k_slope': 0.25  # Slope of k values change over time
+        'k_slope': 0.01  # Slope of k values change over time
     }
 
 
@@ -218,7 +211,6 @@ def analyze_neighbors(D_values, params, P, Q):
         high_D_count = sum(D_values[neighbor] > threshold for neighbor in neighbors)
         low_D_count = len(neighbors) - high_D_count
         cell_type = 'high_D' if D_values[ind] > threshold else 'low_D'
-
         neighbor_types['p'].append(p)
         neighbor_types['q'].append(q)
         neighbor_types['high_D_neighbors'].append(high_D_count)
@@ -231,68 +223,122 @@ def analyze_neighbors(D_values, params, P, Q):
 
 def plot_k_lattice(k_values, P, Q):
     fig, ax = plt.subplots()
+    Cmax = 1.1 * np.max(k_values)
+
+    cmap = plt.get_cmap('copper_r')
+
     for i in range(1, P + 1):
         for j in range(1, Q + 1):
             ind = pq2ind(i, j, P)
-            ax.text(j, i, f'{k_values[ind]:.2f}', ha='center', va='center')
+            mycolor = min([k_values[ind] / Cmax, 1])
+            color = cmap(mycolor)
+            plotHexagon(i, j, color, ax)
 
-    ax.set_xticks(range(1, Q + 1))
-    ax.set_yticks(range(1, P + 1))
-    ax.set_xticklabels(range(1, Q + 1))
-    ax.set_yticklabels(range(1, P + 1))
-    ax.set_xlim(0.5, Q + 0.5)
-    ax.set_ylim(0.5, P + 0.5)
-    ax.set_aspect('equal')
+    # Add a colorbar
+    sm = plt.cm.ScalarMappable(cmap=cmap)
+    sm.set_array(k_values)
+    cbar = plt.colorbar(sm, ax=ax)
+    cbar.set_label('k values')
+
+    ax.axis('equal')
+    ax.axis('off')
     plt.show()
 
 
 def plot_D_vs_k(D_values, k_values):
-    plt.figure()
-    plt.scatter(k_values, D_values)
-    plt.xlabel('k values')
-    plt.ylabel('D values')
-    plt.title('D values vs k values')
+    fig, ax = plt.subplots()
+    ax.scatter(k_values, D_values, s=10, c='blue', alpha=0.5)
+    ax.set_xlabel('k values')
+    ax.set_ylabel('D values')
+    ax.set_title('D values vs. k values')
     plt.show()
 
 
 def plot_neighbor_distribution(neighbors_df):
-    high_D_counts = neighbors_df[neighbors_df['cell_type'] == 'high_D']['high_D_neighbors']
-    low_D_counts = neighbors_df[neighbors_df['cell_type'] == 'low_D']['low_D_neighbors']
+    fig, ax = plt.subplots()
 
-    plt.figure()
-    plt.hist(high_D_counts, alpha=0.5, label='High D Cells')
-    plt.hist(low_D_counts, alpha=0.5, label='Low D Cells')
-    plt.xlabel('Number of High D Neighbors')
-    plt.ylabel('Frequency')
-    plt.legend()
-    plt.title('Distribution of High D Neighbors')
+    # High D cells distribution
+    high_D_cells = neighbors_df[neighbors_df['cell_type'] == 'high_D']['high_D_neighbors']
+    high_D_cells.hist(bins=np.arange(0, 7) - 0.5, ax=ax, alpha=0.5, label='High D cells', color='green')
+
+    # Low D cells distribution
+    low_D_cells = neighbors_df[neighbors_df['cell_type'] == 'low_D']['high_D_neighbors']
+    low_D_cells.hist(bins=np.arange(0, 7) - 0.5, ax=ax, alpha=0.5, label='Low D cells', color='red')
+
+    ax.set_xlabel('Number of High D Neighbors')
+    ax.set_ylabel('Frequency')
+    ax.set_title('Distribution of High D Neighbors')
+    ax.legend()
     plt.show()
 
 
-def plot_high_D_concentration(tout, yout, P, Q, radius, center_p, center_q):
-    plt.style.use(['science', 'notebook', 'grid'])
-    center_ind = pq2ind(center_p, center_q, P)
-    center_x, center_y = ind2pq(center_ind, P)
-    cell_positions = [ind2pq(i, P) for i in range(P * Q)]
-
-    distances = np.array([np.sqrt((x - center_x) ** 2 + (y - center_y) ** 2) for x, y in cell_positions])
-    within_radius = distances <= radius
+def plot_high_D_concentration(tout, yout, P, Q):
+    n = P * Q
+    D_threshold = np.mean(yout[-1, :n])  # Threshold to classify high D cells
 
     high_D_concentration = []
 
-    threshold = np.mean(yout[:, :P * Q])
+    for t in range(len(tout)):
+        D_values = yout[t, :n]
+        high_D_count = np.sum(D_values > D_threshold)
+        high_D_concentration.append(high_D_count / n)
 
-    for t_index in range(len(tout)):
-        D_values = yout[t_index, :P * Q]
-        high_D_cells = (D_values > threshold)
-        concentration = np.sum(high_D_cells & within_radius) / np.sum(within_radius)
-        high_D_concentration.append(concentration)
+    plt.figure(figsize=(10, 10))
+    plt.plot(tout, high_D_concentration, linestyle='-', color='blue', linewidth=5)
+    plt.xlabel('Time [a.u]', fontsize=30)
+    plt.ylabel('Concentration of HC [a.u]', fontsize=30)
+    # plt.title('Concentration of High D cells', fontsize=30)
+    # plt.legend()
+    plt.show()
 
-    plt.figure()
-    plt.plot(tout, high_D_concentration)
-    plt.xlabel('time [a.u]')
-    plt.ylabel('HC Concentration [a.u]')
-    plt.title(f'HC Concentration within radius {radius} of cell ({center_p},{center_q})')
+
+def plot_low_D_no_high_D_neighbors(tout, yout, P, Q):
+    n = P * Q
+    D_threshold = np.mean(yout[-1, :n])  # Threshold to classify high D cells
+
+    low_D_no_high_D_neighbors = []
+
+    for t in range(len(tout)):
+        D_values = yout[t, :n]
+        count = 0
+        for ind in range(n):
+            if D_values[ind] <= D_threshold:
+                neighbors = findneighborhex(ind, P, Q)
+                if all(D_values[neighbor] <= D_threshold for neighbor in neighbors):
+                    count += 1
+        low_D_no_high_D_neighbors.append(count)
+
+    plt.figure(figsize=(10, 10))
+    plt.plot(tout, low_D_no_high_D_neighbors, linestyle='-', color='red', linewidth=5)
+    plt.xlabel('Time [a.u]', fontsize=30)
+    plt.ylabel('# of SC', fontsize=30)
+    # plt.title('Low D cells with no High D neighbors', fontsize=30)
+    # plt.legend()
+    plt.show()
+
+
+def plot_high_D_with_high_D_neighbors(tout, yout, P, Q):
+    n = P * Q
+    D_threshold = np.mean(yout[-1, :n])  # Threshold to classify high D cells
+
+    high_D_with_high_D_neighbors = []
+
+    for t in range(len(tout)):
+        D_values = yout[t, :n]
+        count = 0
+        for ind in range(n):
+            if D_values[ind] > D_threshold:
+                neighbors = findneighborhex(ind, P, Q)
+                if any(D_values[neighbor] > D_threshold for neighbor in neighbors):
+                    count += 1
+        high_D_with_high_D_neighbors.append(count)
+
+    plt.figure(figsize=(10, 10))
+    plt.plot(tout, high_D_with_high_D_neighbors, linestyle='-', color='green', linewidth=5)
+    plt.xlabel('Time [a.u]', fontsize=30)
+    plt.ylabel('# of HC', fontsize=30)
+    # plt.title('High D cells with High D neighbors', fontsize=30)
+    # plt.legend()
     plt.show()
 
 
