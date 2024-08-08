@@ -161,25 +161,24 @@ def plot_final_lattice(tout, yout, P, Q, n):
     Cmax = np.max(yout[-1, :n])
     tind = -1  # last time point
 
-    # Use a color map (e.g., 'viridis') to map D values to colors
-    cmap = plt.get_cmap('Greens_r')
+    # Use a reversed color map 'Greens'
+    cmap = plt.get_cmap('Greens').reversed()
 
     for i in range(1, P + 1):
         for j in range(1, Q + 1):
             ind = pq2ind(i, j, P)
-            mycolor = min([yout[tind, ind] / Cmax, 1])
-            color = cmap(mycolor)  # Get color from the colormap
-            plotHexagon(i, j, color, ax)
+            delta_level = yout[tind, ind] / Cmax  # Normalize D values to range [0, 1]
+            color_cmap = cmap(0.7 * (delta_level - 1) + 1)  # Apply color mapping formula
+            plotHexagon(i, j, color_cmap, ax)
 
     # Add a colorbar
     sm = plt.cm.ScalarMappable(cmap=cmap)
     sm.set_array(yout[tind, :n])
     cbar = plt.colorbar(sm, ax=ax)
-    cbar.set_label('Delta levels')
+    cbar.set_label('D values')
 
     ax.axis('equal')
     ax.axis('off')
-    # plt.title(f'log(<k>) = {mean_k}')
     plt.show()
 
 def analyze_neighbors(D_values, params, P, Q):
