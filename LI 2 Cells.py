@@ -1,4 +1,10 @@
-# A code the simulates classic LI on 2 cells
+"""
+
+@author: Yotam852
+
+This script simulates classic Lateral Inhibition on two cells.
+
+"""
 
 import numpy as np
 import matplotlib.pyplot as plt
