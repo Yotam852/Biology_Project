@@ -1,5 +1,5 @@
 """
-This Script
+This script simulates Lateral Inhibiton on cell lattice
 """
 
 import numpy as np

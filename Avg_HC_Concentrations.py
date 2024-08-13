@@ -92,10 +92,10 @@ def defaultparams():
         'P': 10,
         'Q': 10,
         'k_mean': -1,  # Mean of k distribution
-        'k_std': 1,  # Standard deviation of k distribution
+        'k_std': 0,  # Standard deviation of k distribution
         'g': 1,
         'beta0': 0.4,
-        'k_slope': 0.01  # Slope of k values change over time
+        'k_slope': 0.0001  # Slope of k values change over time
     }
 
 
