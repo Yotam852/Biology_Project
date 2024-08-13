@@ -1,5 +1,9 @@
 """
-This script simulates classic Lateral Inhibition on cell lattice
+
+@author: Yotam852
+
+This script simulates classic Lateral Inhibition on cell lattice using a hexagonal grid.
+
 """
 
 import numpy as np
